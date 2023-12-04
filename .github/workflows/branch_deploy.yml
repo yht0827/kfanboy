@@ -1,0 +1,58 @@
+name: branch CD
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+
+    steps:
+      - name: 체크아웃
+        uses: actions/checkout@v3
+      - name: JDK 17 설치
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Gradle 캐싱
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Gradle 권한 부여
+        run: chmod +x gradlew
+        shell: bash
+
+      - name: Gradle test & build 수행
+        run: ./gradlew clean build -Pprofile=prod -Pjasypt.encryptor.password=${{ secrets.JASYPT_PASSWORD }}
+        shell: bash
+
+      # dockerfile을 통해 이미지를 빌드하고, 이를 docker repo로 push
+      # 이 때 사용되는 ${{ secrets.DOCKER_REPO }}/directors-dev 가 위에서 만든 도커 repository
+      - name: Docker 빌드 생성 및 푸시
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/kfanboy .
+          docker push ${{ secrets.DOCKER_REPO }}/kfanboy
+
+      - name: 서버로 도커 배포
+        uses: appleboy/ssh-action@master
+        id: deploy
+        with:
+          host: ${{ secrets.NCP_SERVER_HOST }}
+          username: ${{ secrets.NCP_SERVER_USER }}
+          password: ${{ secrets.NCP_SERVER_PASSWORD }}
+          script: |
+            docker pull ${{ secrets.DOCKER_REPO }}/kfanboy:latest
+            docker stop $(docker ps -a -q) 2>/dev/null || true
+            docker run -d --log-driver=syslog -p 80:80 -e "JAVA_OPTS=-Djasypt.encryptor.password=${{ secrets.JASYPT_PASSWORD }} -Dspring.profiles.active=prod" ${{ secrets.DOCKER_REPO }}/kfanboy:latest          
+            docker rm $(docker ps --filter 'status=exited' -a -q) 2>/dev/null || true
+            docker image prune -a -f

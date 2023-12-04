@@ -1,0 +1,53 @@
+# common
+server:
+  port: 80
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        path: /
+        name: JSESSIONID
+        secure: true
+      timeout: 3600
+spring:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        show_sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  flyway:
+    enabled: true
+
+--- # dev
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: ENC(WJ3d+muuqzmhiBx2KSLx4LRxIqYK3VpsDMRcKLGpOERWRf+nGWKaOdO7VxYvENsnE/+zdtd+lOCSy8zPEbB80+zqF27TsLe/EQm+BiIomeMSFF//Enkkkw==)
+    username: ENC(y7lJxhwbNOfP/OZjw0ohYQ==)
+    password: ENC(XdUhwFWCcLQe4GJCAlwFqQ==)
+  data:
+    redis:
+      host: ENC(iOCrqrEBLXqP4TaxRp1DxrrYpD4HSgyB)
+      port: 6379
+
+--- # prod
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ENC(KhR+dpoehOYsuWdaKE5e4VikCvMV+c/WtvCwuTtXnskpXwSC1Xpe25yzjZHyhB5kpa159IkaZH0KWHSg8ulMLzitMSHZUi56DEoEKqy3MCy8OCnVxA5bgg==)
+    username: ENC(f4GTy/6qhn4p6RGb7qh73A==)
+    password: ENC(v+atuNqqjeXxmytPrVUUwKHSYdHCjrt5)
+  data:
+    redis:
+      host: ENC(M4mKVBEMriuCcbM4AxQ6yJH1La5NZt1X)
+      port: 6379
