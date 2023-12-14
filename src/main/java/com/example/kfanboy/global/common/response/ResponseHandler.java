@@ -2,6 +2,7 @@ package com.example.kfanboy.global.common.response;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.example.kfanboy.global.common.SuccessMessage;
 import com.example.kfanboy.global.exception.CustomException;
@@ -52,19 +53,20 @@ public class ResponseHandler {
 				.build());
 	}
 
-	public static ResponseEntity<ResponseDto<?>> error(final CustomException exception) {
+	public static ResponseEntity<ErrorResponseDto> error(final CustomException exception) {
 		return ResponseEntity.status(exception.getStatus())
-			.body(ResponseDto.builder()
+			.body(ErrorResponseDto.builder()
 				.httpStatus(exception.getStatus())
 				.message(exception.getMessage())
 				.build());
 	}
 
-	public static ResponseEntity<ResponseDto<?>> error(final HttpStatus httpStatus, final String message) {
-		return ResponseEntity.status(httpStatus)
-			.body(ResponseDto.builder()
-				.httpStatus(httpStatus)
-				.message(message)
+	public static ResponseEntity<ErrorResponseDto> error(final MethodArgumentNotValidException exception) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+			.body(ErrorResponseDto.builder()
+				.httpStatus(HttpStatus.BAD_REQUEST)
+				.message(exception.getMessage())
+				.errorList(ErrorResponseDto.CustomFieldError.of(exception.getBindingResult()))
 				.build());
 	}
 
