@@ -31,6 +31,7 @@ public class ResponseHandler {
 				.httpStatus(httpStatus)
 				.data(data)
 				.build());
+
 	}
 
 	public static <T> ResponseEntity<ResponseDto<T>> success(final T data, final SuccessMessage successMessage) {
@@ -39,15 +40,6 @@ public class ResponseHandler {
 				.httpStatus(HttpStatus.OK)
 				.message(successMessage.getMessage())
 				.data(data)
-				.build());
-	}
-
-	public static ResponseEntity<ResponseDto<?>> success(final HttpStatus httpStatus,
-		final SuccessMessage successMessage) {
-		return ResponseEntity.status(httpStatus)
-			.body(ResponseDto.builder()
-				.httpStatus(httpStatus)
-				.message(successMessage.getMessage())
 				.build());
 	}
 

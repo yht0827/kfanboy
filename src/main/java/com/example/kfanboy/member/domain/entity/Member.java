@@ -16,7 +16,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,20 +31,19 @@ public class Member extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Email
-	@NotBlank
 	@Column(nullable = false, unique = true, length = 50)
 	@Length(min = 1, max = 50)
+	@NotBlank
+	@Email
 	private String email;
 
+	@Column(nullable = false, length = 30)
+	@Length(min = 8, max = 30)
 	@NotBlank
-	@Column(nullable = false, length = 100)
-	@Length(min = 1, max = 100)
 	private String password;
 
-	@NotBlank
 	@Column(name = "nick_name", nullable = false, unique = true, length = 30)
-	@Length(min = 1, max = 30)
+	@NotBlank
 	private String nickName;
 
 	@Column(name = "last_login_at")
@@ -54,18 +52,14 @@ public class Member extends BaseTimeEntity {
 	@Column(name = "unregistered_at")
 	private LocalDateTime unregisteredAt;
 
-	@NotNull
 	@Enumerated(EnumType.STRING)
-	@Column(name = "user_role", nullable = false)
+	@NotBlank
+	@Column(name = "user_role", nullable = false, length = 10)
 	private UserRole userRole;
-
-	@NotNull
-	@Column(name = "is_deleted", nullable = false)
-	private Boolean isDeleted;
 
 	@Builder
 	public Member(Long id, String email, String password, String nickName, LocalDateTime lastLoginAt,
-		LocalDateTime unregisteredAt, UserRole userRole, Boolean isDeleted) {
+		LocalDateTime unregisteredAt, UserRole userRole) {
 		this.id = id;
 		this.email = email;
 		this.password = password;
@@ -73,10 +67,5 @@ public class Member extends BaseTimeEntity {
 		this.lastLoginAt = lastLoginAt;
 		this.unregisteredAt = unregisteredAt;
 		this.userRole = userRole;
-		this.isDeleted = isDeleted;
-	}
-
-	public void updateLastLogin() {
-		this.lastLoginAt = LocalDateTime.now();
 	}
 }
