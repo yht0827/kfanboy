@@ -1,5 +1,5 @@
 package com.example.kfanboy.member.domain.entity;
 
 public enum UserRole {
-	ADMIN, USER
+	ROLE_ADMIN, ROLE_USER
 }
