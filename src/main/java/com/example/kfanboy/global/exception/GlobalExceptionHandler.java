@@ -2,19 +2,17 @@ package com.example.kfanboy.global.exception;
 
 import static com.example.kfanboy.global.common.response.ResponseHandler.*;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.example.kfanboy.global.common.response.HttpResponse;
+import com.example.kfanboy.global.common.response.ErrorResponseDto;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 	@ExceptionHandler(CustomException.class)
-	protected ResponseEntity<HttpResponse<?>> handleCustomException(final CustomException exception) {
+	protected ResponseEntity<ErrorResponseDto> handleCustomException(final CustomException exception) {
 		return error(exception);
 	}
 
@@ -22,9 +20,7 @@ public class GlobalExceptionHandler {
 	 * Validation Exception
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	protected ResponseEntity<HttpResponse<?>> handleValidException(
-		final MethodArgumentNotValidException exception) {
-		FieldError error = exception.getBindingResult().getFieldErrors().get(0);
-		return error(HttpStatus.BAD_REQUEST, error.getField() + " : " + error.getDefaultMessage());
+	protected ResponseEntity<ErrorResponseDto> handleValidException(final MethodArgumentNotValidException exception) {
+		return error(exception);
 	}
 }

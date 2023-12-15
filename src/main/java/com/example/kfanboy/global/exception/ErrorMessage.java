@@ -26,7 +26,9 @@ public enum ErrorMessage {
 	DUPLICATE_ACCOUNT_USER(HttpStatus.UNAUTHORIZED, "해당 계정이 존재합니다."),
 	USER_NOT_REGISTERED(HttpStatus.UNAUTHORIZED, "등록되지 않은 계정입니다."),
 	USER_NOT_CREATED(HttpStatus.BAD_REQUEST, "계정을 생성하지 못하였습니다."),
-	NOT_LOGIN(HttpStatus.UNAUTHORIZED, "로그인 이후 사용 가능");
+	NOT_LOGIN(HttpStatus.UNAUTHORIZED, "로그인 이후 사용 가능"),
+
+	DUMMY(null, "");
 
 	private final HttpStatus status;
 	private final String message;
