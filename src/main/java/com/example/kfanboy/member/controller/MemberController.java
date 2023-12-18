@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,16 +69,18 @@ public class MemberController {
 	}
 
 	@LoginCheck
-	@PatchMapping
-	public ResponseEntity<ResponseDto<UserResponseDto>> update(
+	@PutMapping
+	public ResponseEntity<ResponseDto<UserResponseDto>> update(@CurrentUser final Long id,
 		@RequestBody @Valid final UserUpdateRequestDto requestDto) {
-		return success(memberService.update(requestDto));
+		return success(memberService.update(id, requestDto));
 	}
 
 	@LoginCheck
 	@DeleteMapping
-	public ResponseEntity<ResponseDto<?>> delete(@RequestBody @Valid final UserDeleteRequestDto userDeleteRequestDto) {
-		memberService.delete(userDeleteRequestDto);
+	public ResponseEntity<ResponseDto<?>> delete(@CurrentUser final Long id,
+		@RequestBody @Valid final UserDeleteRequestDto userDeleteRequestDto) {
+		memberService.delete(id, userDeleteRequestDto);
+		loginService.logout();
 		return success(HttpStatus.OK, SuccessMessage.DELETE_USER_SUCCESS);
 	}
 }

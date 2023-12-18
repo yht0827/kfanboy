@@ -27,9 +27,9 @@ public class MemberService {
 
 	@Transactional(readOnly = true)
 	public void isExistsEmail(final String email) {
-		Optional.of(StringUtils.isEmpty(email))
+		Optional.of(!StringUtils.isEmpty(email))
 			.filter(Boolean::booleanValue)
-			.orElseThrow(() -> new CustomException(ErrorMessage.DUPLICATE_ACCOUNT_USER));
+			.orElseThrow(() -> new CustomException(ErrorMessage.INPUT_ERROR));
 
 		// 해당 이메일이 존재하면 Exception 발생
 		memberRepository.findByEmail(email).ifPresent(e -> {
@@ -45,9 +45,7 @@ public class MemberService {
 	@Transactional
 	public void join(final JoinDto joinDto) {
 		isExistsEmail(joinDto.email());
-		Optional.of(joinDto)
-			.filter(dto -> StringUtils.equals(dto.password(), dto.password2()))
-			.orElseThrow(() -> new CustomException(ErrorMessage.INCORRECT_PASSWORD));
+		isEqualPassword(joinDto.password(), joinDto.password2());
 
 		// 비밀번호 암호화 후 저장
 		Member member = memberRepository.save(joinDto.toEntity(passwordEncryptor.encrypt(joinDto.password())));
@@ -58,21 +56,32 @@ public class MemberService {
 	}
 
 	@Transactional
-	public UserResponseDto update(final UserUpdateRequestDto userUpdateRequestDto) {
-		Member oldMember = findById(userUpdateRequestDto.id());
-		String encryptPassword = passwordEncryptor.encrypt(userUpdateRequestDto.password());
-		return UserResponseDto.toDto(oldMember.updateMember(userUpdateRequestDto, encryptPassword));
+	public UserResponseDto update(final Long id, final UserUpdateRequestDto userUpdateRequestDto) {
+		isEqualPassword(userUpdateRequestDto.password(), userUpdateRequestDto.password2());
+
+		Member oldMember = findById(id);
+		return UserResponseDto.toDto(
+			oldMember.updateMember(userUpdateRequestDto, passwordEncryptor.encrypt(userUpdateRequestDto.password())));
 	}
 
 	@Transactional
-	public void delete(final UserDeleteRequestDto userDeleteRequestDto) {
-		Member member = findById(userDeleteRequestDto.id());
+	public void delete(final Long id, final UserDeleteRequestDto userDeleteRequestDto) {
+		Member member = findById(id);
 		passwordEncryptor.validatePassword(userDeleteRequestDto.password(), member.getPassword());
 		member.deleteUser();
 	}
 
-	private Member findById(Long id) {
+	private Member findById(final Long id) {
 		return memberRepository.findById(id)
 			.orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
+	}
+
+	/**
+	 * 패스워드 동일한지 확인
+	 */
+	private void isEqualPassword(final String password1, final String password2) {
+		Optional.of(StringUtils.equals(password1, password2))
+			.filter(Boolean::booleanValue)
+			.orElseThrow(() -> new CustomException(ErrorMessage.INCORRECT_PASSWORD));
 	}
 }
