@@ -25,21 +25,39 @@ public class LoginService {
 	private final PasswordEncryptor passwordEncryptor;
 	private final HttpSession httpSession;
 
+	/**
+	 * 로그인 처리
+	 */
 	@Transactional
 	public void login(final LoginDto loginDto) {
-		Member loginUser = memberRepository.findByEmail(loginDto.email())
+		Member loginUser = findMemberByEmail(loginDto.email());
+		passwordEncryptor.validatePassword(loginDto.password(), loginUser.getPassword());
+
+		setUserSession(loginUser);
+		loginUser.updateLastLogin();
+	}
+
+	/**
+	 * 이메일 검증
+	 */
+	private Member findMemberByEmail(final String email) {
+		return memberRepository.findByEmail(email)
 			.orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
+	}
 
-		boolean isValidPassword = passwordEncryptor.isMatch(loginDto.password(), loginUser.getPassword());
-
-		if (!isValidPassword) {
-			throw new CustomException(ErrorMessage.INCORRECT_PASSWORD_OR_USER_EMAIL);
-		}
-
+	/**
+	 * 메모리에 세션 저장
+	 */
+	private void setUserSession(final Member loginUser) {
 		httpSession.setAttribute(SessionKey.USER_ID, loginUser.getId());
 		httpSession.setAttribute(SessionKey.USER_ROLE, loginUser.getUserRole());
+	}
 
-		loginUser.updateLastLogin();
+	/**
+	 * 로그 아웃(세션 invalidate)
+	 */
+	public void logout() {
+		httpSession.invalidate();
 	}
 
 	public Optional<Long> getCurrentUser() {
@@ -49,9 +67,4 @@ public class LoginService {
 	public Optional<UserRole> getCurrentRole() {
 		return Optional.ofNullable((UserRole)httpSession.getAttribute(SessionKey.USER_ROLE));
 	}
-
-	public void logout() {
-		httpSession.invalidate();
-	}
-
 }
