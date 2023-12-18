@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.hibernate.validator.constraints.Length;
 
 import com.example.kfanboy.global.common.BaseTimeEntity;
+import com.example.kfanboy.member.dto.UserUpdateRequestDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -78,5 +79,17 @@ public class Member extends BaseTimeEntity {
 
 	public void updateLastLogin() {
 		this.lastLoginAt = LocalDateTime.now();
+	}
+
+	public Member updateMember(UserUpdateRequestDto userUpdateRequestDto, String encryptPassword) {
+		this.nickName = userUpdateRequestDto.nickName();
+		this.password = encryptPassword;
+
+		return this;
+	}
+
+	public void deleteUser() {
+		this.unregisteredAt = LocalDateTime.now();
+		this.isDeleted = true;
 	}
 }

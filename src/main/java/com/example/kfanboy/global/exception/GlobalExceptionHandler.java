@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.kfanboy.global.common.response.ErrorResponseDto;
 
+import jakarta.validation.ConstraintViolationException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 	@ExceptionHandler(CustomException.class)
@@ -19,8 +21,8 @@ public class GlobalExceptionHandler {
 	/**
 	 * Validation Exception
 	 */
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	protected ResponseEntity<ErrorResponseDto> handleValidException(final MethodArgumentNotValidException exception) {
+	@ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
+	protected ResponseEntity<ErrorResponseDto> handleValidException(final Exception exception) {
 		return error(exception);
 	}
 }

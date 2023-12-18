@@ -10,7 +10,7 @@ create table member
     last_login_at   datetime(6),
     unregistered_at datetime(6),
     user_role       varchar(10)  not null default 'ROLE_USER',
-    is_deleted      tinyint(1)   not null default 0,
+    is_deleted      boolean      not null default false,
     primary key (id)
 );
 

@@ -20,6 +20,7 @@ public enum ErrorMessage {
 
 	// User
 	USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 회원입니다."),
+	USER_EXISTED(HttpStatus.BAD_REQUEST, "이미 존재하는 회원입니다."),
 	USER_NOT_AUTHORIZED(HttpStatus.UNAUTHORIZED, "해당 계정은 권한이 없습니다."),
 	INCORRECT_PASSWORD(HttpStatus.UNAUTHORIZED, "비밀번호가 서로 일치하지 않습니다."),
 	INCORRECT_PASSWORD_OR_USER_EMAIL(HttpStatus.UNAUTHORIZED, "비밀번호가 틀렸거나, 해당 계정이 없습니다."),
