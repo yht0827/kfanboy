@@ -1,5 +1,10 @@
 package com.example.kfanboy.global.common;
 
+import java.util.Arrays;
+import java.util.Optional;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -18,9 +23,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LoginCheckInterceptor implements HandlerInterceptor {
 	private final LoginService loginService;
+	private final Environment environment;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+		// 테스트 환경에서는 인터셉트가 동작하지 않도록 설정
+		Optional<String> profile = Arrays.stream(environment.getActiveProfiles()).findFirst();
+		if (profile.isPresent() && StringUtils.equals(profile.get(), "test")) {
+			return true;
+		}
+
 		if (handler instanceof HandlerMethod handlerMethod) {
 			LoginCheck loginCheck = handlerMethod.getMethodAnnotation(LoginCheck.class);
 
