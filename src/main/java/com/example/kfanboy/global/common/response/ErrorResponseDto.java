@@ -11,7 +11,7 @@ import jakarta.validation.ConstraintViolation;
 import lombok.Builder;
 
 @Builder
-public record ErrorResponseDto(HttpStatus httpStatus, String message, List<CustomFieldError> errorList) {
+public record ErrorResponseDto(HttpStatus status, String message, List<CustomFieldError> errorList) {
 	public record CustomFieldError(String field, String value, String reason) {
 		public static List<CustomFieldError> of(final BindingResult bindingResult) {
 			return bindingResult.getFieldErrors().stream()

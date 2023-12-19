@@ -8,8 +8,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.example.kfanboy.global.common.annotation.CurrentUser;
-import com.example.kfanboy.global.exception.CustomException;
-import com.example.kfanboy.global.exception.ErrorMessage;
 import com.example.kfanboy.member.service.LoginService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +25,6 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-		return loginService.getCurrentUser()
-			.orElseThrow(() -> new CustomException(ErrorMessage.NOT_LOGIN));
+		return loginService.getCurrentUser().orElse(0L);
 	}
 }

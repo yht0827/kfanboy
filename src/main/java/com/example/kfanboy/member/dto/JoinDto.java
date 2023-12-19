@@ -5,7 +5,9 @@ import com.example.kfanboy.member.domain.entity.UserRole;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 
+@Builder
 public record JoinDto(
 	@Email @NotBlank String email, @NotBlank String password, @NotBlank String password2, @NotBlank String nickName) {
 	public Member toEntity(String encryptPassword) {

@@ -18,6 +18,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -30,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebMvcTest
 @ExtendWith({RestDocumentationExtension.class})
 @Import(RestDocsConfig.class)
+@ActiveProfiles("test")
 public abstract class AbstractControllerTest {
 	@Autowired
 	protected ObjectMapper objectMapper;
@@ -66,21 +68,22 @@ public abstract class AbstractControllerTest {
 	}
 
 	protected ResponseFieldsSnippet errorResponseFields() {
-		return responseFields(List.of(fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태 코드"),
-			fieldWithPath("field").type(JsonFieldType.STRING).description("필드"),
-			fieldWithPath("message").type(JsonFieldType.STRING).description("메세지")));
+		return responseFields(List.of(
+			fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+			fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
+			fieldWithPath("errorList").type(JsonFieldType.ARRAY).description("에러리스트")));
 	}
 
 	protected List<FieldDescriptor> getResponseFields() {
 		List<FieldDescriptor> list = new ArrayList<>();
-		list.add(fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태 코드"));
+		list.add(fieldWithPath("status").type(JsonFieldType.STRING).description("상태"));
 		list.add(fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"));
 		return list;
 	}
 
 	protected List<FieldDescriptor> getDefaultResponseFields() {
 		List<FieldDescriptor> list = new ArrayList<>();
-		list.add(fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태 코드"));
+		list.add(fieldWithPath("status").type(JsonFieldType.STRING).description("상태"));
 		list.add(fieldWithPath("data").type(JsonFieldType.NULL).description("데이터"));
 		list.add(fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"));
 		return list;
