@@ -1,5 +1,6 @@
 package com.example.kfanboy.global.member;
 
+import com.example.kfanboy.member.domain.entity.Member;
 import com.example.kfanboy.member.domain.entity.UserRole;
 import com.example.kfanboy.member.dto.JoinDto;
 import com.example.kfanboy.member.dto.LoginDto;
@@ -45,6 +46,17 @@ public class MemberDtoTest {
 	public static UserDeleteRequestDto getUserDeleteRequestDto() {
 		return UserDeleteRequestDto.builder()
 			.password("Qwe123!@#")
+			.build();
+	}
+
+	public static Member getMember() {
+		return Member.builder()
+			.id(1L)
+			.email("test1234@naver.com")
+			.password("Qwe123!@#")
+			.nickName("test1234")
+			.isDeleted(false)
+			.userRole(UserRole.ROLE_USER)
 			.build();
 	}
 
