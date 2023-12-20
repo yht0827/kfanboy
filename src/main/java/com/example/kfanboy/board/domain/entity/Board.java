@@ -2,8 +2,6 @@ package com.example.kfanboy.board.domain.entity;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.validator.constraints.Length;
-
 import com.example.kfanboy.board.domain.vo.BoardCount;
 import com.example.kfanboy.global.common.BaseTimeEntity;
 
@@ -36,7 +34,6 @@ public class Board extends BaseTimeEntity {
 	private String title;
 
 	@NotNull
-	@Length(min = 20, max = 500)
 	@Column(columnDefinition = "TEXT", nullable = false)
 	private String content;
 
