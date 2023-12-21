@@ -3,14 +3,21 @@ package com.example.kfanboy.board.domain.entity;
 import java.time.LocalDateTime;
 
 import com.example.kfanboy.board.domain.vo.BoardCount;
+import com.example.kfanboy.category.domain.entity.Category;
 import com.example.kfanboy.global.common.BaseTimeEntity;
+import com.example.kfanboy.member.domain.entity.Member;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -48,23 +55,25 @@ public class Board extends BaseTimeEntity {
 	private Boolean isDeleted;
 
 	@NotNull
-	@Column(name = "member_id", nullable = false)
-	private Long memberId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Member member;
 
 	@NotNull
-	@Column(name = "category_id", nullable = false)
-	private Long categoryId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Category category;
 
 	@Builder
-	public Board(Long boardId, String title, String content, Long memberId, Long categoryId, LocalDateTime deletedAt,
-		Boolean isDeleted) {
+	public Board(Long boardId, String title, String content, LocalDateTime deletedAt,
+		Boolean isDeleted, Member member, Category category) {
 		this.boardId = boardId;
 		this.title = title;
 		this.content = content;
 		this.boardCount = new BoardCount();
-		this.memberId = memberId;
 		this.deletedAt = deletedAt;
-		this.categoryId = categoryId;
 		this.isDeleted = isDeleted;
+		this.member = member;
+		this.category = category;
 	}
 }
