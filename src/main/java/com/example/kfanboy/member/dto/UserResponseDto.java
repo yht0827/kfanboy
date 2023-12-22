@@ -5,11 +5,12 @@ import com.example.kfanboy.member.domain.entity.UserRole;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder
 public record UserResponseDto(
-	@NotBlank Long id, @Email String email, @NotBlank String nickName, @NotBlank UserRole userRole) {
+	@NotNull Long id, @Email String email, @NotBlank String nickName, @NotBlank UserRole userRole) {
 	public static UserResponseDto toDto(Member member) {
 		return UserResponseDto.builder()
 			.id(member.getId())

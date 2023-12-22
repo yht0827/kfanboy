@@ -11,8 +11,6 @@ CREATE table board
     updated_at    datetime(6)  not null default now(6),
     member_id     bigint       not null,
     category_id   bigint       not null,
-    deleted_at    datetime(6),
-    is_deleted    boolean      not null default false,
     primary key (board_id)
 );
 
