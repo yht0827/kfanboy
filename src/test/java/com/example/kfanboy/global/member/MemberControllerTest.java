@@ -150,7 +150,7 @@ public class MemberControllerTest extends AbstractControllerTest {
 		LoginDto loginDto = getLoginDto();
 
 		// when
-		doThrow(new CustomException(ErrorMessage.NOT_FOUND)).when(loginService)
+		doThrow(new CustomException(ErrorMessage.USER_NOT_FOUND)).when(loginService)
 			.login(loginDto);
 
 		// then

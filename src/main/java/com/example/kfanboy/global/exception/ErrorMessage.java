@@ -28,6 +28,13 @@ public enum ErrorMessage {
 	USER_NOT_CREATED(HttpStatus.BAD_REQUEST, "계정을 생성하지 못하였습니다."),
 	NOT_LOGIN(HttpStatus.UNAUTHORIZED, "로그인 이후 사용 가능"),
 
+	// Board
+	BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 게시글입니다."),
+	BOARD_NOT_CREATED(HttpStatus.BAD_REQUEST, "게시글을 생성하지 못하였습니다."),
+
+	// Category
+	CATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 카테고리입니다."),
+
 	DUMMY(null, "");
 
 	private final HttpStatus status;
