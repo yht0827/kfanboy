@@ -2,7 +2,6 @@ package com.example.kfanboy.board.controller;
 
 import static com.example.kfanboy.global.common.response.ResponseHandler.*;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +35,7 @@ public class BoardController {
 	public ResponseEntity<ResponseDto<?>> createBoard(@CurrentUser final Long memberId,
 		@Valid @RequestBody final BoardCreateRequestDto boardCreateRequestDto) {
 		boardService.create(memberId, boardCreateRequestDto);
-		return success(HttpStatus.CREATED, SuccessMessage.CREATE_BOARD_SUCCESS);
+		return success(SuccessMessage.CREATE_BOARD_SUCCESS);
 	}
 
 	@LoginCheck
@@ -49,8 +48,9 @@ public class BoardController {
 
 	@LoginCheck
 	@DeleteMapping
-	public ResponseEntity<ResponseDto<?>> deleteBoard(@Valid @RequestBody final BoardDeleteRequestDto boardDeleteRequestDto) {
+	public ResponseEntity<ResponseDto<?>> deleteBoard(
+		@Valid @RequestBody final BoardDeleteRequestDto boardDeleteRequestDto) {
 		boardService.delete(boardDeleteRequestDto);
-		return success(HttpStatus.OK, SuccessMessage.DELETE_BOARD_SUCCESS);
+		return success(SuccessMessage.DELETE_BOARD_SUCCESS);
 	}
 }

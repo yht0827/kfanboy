@@ -15,42 +15,19 @@ public class ResponseHandler {
 	public static <T> ResponseEntity<ResponseDto<T>> success(final T data) {
 		return ResponseEntity.ok()
 			.body(ResponseDto.<T>builder()
-				.status(HttpStatus.OK)
 				.message(SuccessMessage.OK.getMessage())
 				.data(data)
 				.build());
 	}
 
-	public static <T> ResponseEntity<ResponseDto<T>> success(final SuccessMessage successMessage) {
+	public static ResponseEntity<ResponseDto<?>> success(final SuccessMessage successMessage) {
 		return ResponseEntity.ok()
-			.body(ResponseDto.<T>builder().status(HttpStatus.OK).message(successMessage.getMessage()).build());
-	}
-
-	public static <T> ResponseEntity<ResponseDto<T>> success(final HttpStatus httpStatus, final T data) {
-		return ResponseEntity.status(httpStatus)
-			.body(ResponseDto.<T>builder().status(httpStatus).data(data).build());
+			.body(ResponseDto.builder().message(successMessage.getMessage()).build());
 	}
 
 	public static <T> ResponseEntity<ResponseDto<T>> success(final T data, final SuccessMessage successMessage) {
 		return ResponseEntity.ok()
 			.body(ResponseDto.<T>builder()
-				.status(HttpStatus.OK)
-				.message(successMessage.getMessage())
-				.data(data)
-				.build());
-	}
-
-	public static ResponseEntity<ResponseDto<?>> success(final HttpStatus httpStatus,
-		final SuccessMessage successMessage) {
-		return ResponseEntity.status(httpStatus)
-			.body(ResponseDto.builder().status(httpStatus).message(successMessage.getMessage()).build());
-	}
-
-	public static <T> ResponseEntity<ResponseDto<T>> success(final HttpStatus httpStatus, final T data,
-		final SuccessMessage successMessage) {
-		return ResponseEntity.status(httpStatus)
-			.body(ResponseDto.<T>builder()
-				.status(httpStatus)
 				.message(successMessage.getMessage())
 				.data(data)
 				.build());
@@ -59,7 +36,6 @@ public class ResponseHandler {
 	public static ResponseEntity<ErrorResponseDto> error(final CustomException exception) {
 		return ResponseEntity.status(exception.getStatus())
 			.body(ErrorResponseDto.builder()
-				.status(exception.getStatus())
 				.message(exception.getMessage())
 				.errorList(List.of())
 				.build());
@@ -69,7 +45,6 @@ public class ResponseHandler {
 		if (exception instanceof MethodArgumentNotValidException) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 				.body(ErrorResponseDto.builder()
-					.status(HttpStatus.BAD_REQUEST)
 					.message(exception.getMessage())
 					.errorList(ErrorResponseDto.CustomFieldError.of(
 						((MethodArgumentNotValidException)exception).getBindingResult()))
@@ -78,7 +53,6 @@ public class ResponseHandler {
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 			.body(ErrorResponseDto.builder()
-				.status(HttpStatus.BAD_REQUEST)
 				.message(exception.getMessage())
 				.errorList(ErrorResponseDto.CustomFieldError.of(
 					((ConstraintViolationException)exception).getConstraintViolations()))
