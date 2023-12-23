@@ -69,21 +69,21 @@ public abstract class AbstractControllerTest {
 
 	protected ResponseFieldsSnippet errorResponseFields() {
 		return responseFields(List.of(
-			fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+			fieldWithPath("result").type(JsonFieldType.BOOLEAN).description("결과"),
 			fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
 			fieldWithPath("errorList").type(JsonFieldType.ARRAY).description("에러리스트")));
 	}
 
 	protected List<FieldDescriptor> getResponseFields() {
 		List<FieldDescriptor> list = new ArrayList<>();
-		list.add(fieldWithPath("status").type(JsonFieldType.STRING).description("상태"));
+		list.add(fieldWithPath("result").type(JsonFieldType.BOOLEAN).description("결과"));
 		list.add(fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"));
 		return list;
 	}
 
 	protected List<FieldDescriptor> getDefaultResponseFields() {
 		List<FieldDescriptor> list = new ArrayList<>();
-		list.add(fieldWithPath("status").type(JsonFieldType.STRING).description("상태"));
+		list.add(fieldWithPath("result").type(JsonFieldType.BOOLEAN).description("결과"));
 		list.add(fieldWithPath("data").type(JsonFieldType.NULL).description("데이터"));
 		list.add(fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"));
 		return list;

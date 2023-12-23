@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 
 import jakarta.validation.ConstraintViolation;
 import lombok.Builder;
 
 @Builder
-public record ErrorResponseDto(HttpStatus status, String message, List<CustomFieldError> errorList) {
+public record ErrorResponseDto(boolean result, String message, List<CustomFieldError> errorList) {
 	public record CustomFieldError(String field, String value, String reason) {
 		public static List<CustomFieldError> of(final BindingResult bindingResult) {
 			return bindingResult.getFieldErrors().stream()

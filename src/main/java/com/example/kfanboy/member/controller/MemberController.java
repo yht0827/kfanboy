@@ -2,7 +2,6 @@ package com.example.kfanboy.member.controller;
 
 import static com.example.kfanboy.global.common.response.ResponseHandler.*;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +39,7 @@ public class MemberController {
 	@GetMapping("/email-exists")
 	public ResponseEntity<ResponseDto<?>> isExistsEmail(@Email @RequestParam("email") final String email) {
 		memberService.isExistsEmail(email);
-		return success(HttpStatus.OK, SuccessMessage.AVAILABLE_EMAIL);
+		return success(SuccessMessage.AVAILABLE_EMAIL);
 	}
 
 	@LoginCheck
@@ -49,23 +48,23 @@ public class MemberController {
 		return success(memberService.getProfile(id));
 	}
 
-	@PostMapping("/join")
+	@PostMapping(value = "/join")
 	public ResponseEntity<ResponseDto<?>> join(@RequestBody @Valid final JoinDto joinDto) {
 		memberService.join(joinDto);
-		return success(HttpStatus.CREATED, SuccessMessage.CREATE_USER_SUCCESS);
+		return success(SuccessMessage.CREATE_USER_SUCCESS);
 	}
 
-	@PostMapping("/login")
+	@PostMapping(value = "/login")
 	public ResponseEntity<ResponseDto<?>> login(@RequestBody @Valid final LoginDto loginDto) {
 		loginService.login(loginDto);
-		return success(HttpStatus.OK, SuccessMessage.LOGIN_SUCCESS);
+		return success(SuccessMessage.LOGIN_SUCCESS);
 	}
 
 	@LoginCheck
 	@GetMapping("/logout")
 	public ResponseEntity<ResponseDto<?>> logout() {
 		loginService.logout();
-		return success(HttpStatus.OK, SuccessMessage.LOGOUT_SUCCESS);
+		return success(SuccessMessage.LOGOUT_SUCCESS);
 	}
 
 	@LoginCheck
@@ -81,6 +80,6 @@ public class MemberController {
 		@RequestBody @Valid final UserDeleteRequestDto userDeleteRequestDto) {
 		memberService.delete(id, userDeleteRequestDto);
 		loginService.logout();
-		return success(HttpStatus.OK, SuccessMessage.DELETE_USER_SUCCESS);
+		return success(SuccessMessage.DELETE_USER_SUCCESS);
 	}
 }
