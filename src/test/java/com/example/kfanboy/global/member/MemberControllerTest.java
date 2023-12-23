@@ -115,7 +115,7 @@ public class MemberControllerTest extends AbstractControllerTest {
 		// then
 		mockMvc.perform(post(BASIC_URL + "/join").contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(joinDto)))
-			.andExpect(status().isCreated())
+			.andExpect(status().isOk())
 			.andDo(restDocs.document(
 				requestFields(fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
 					fieldWithPath("password").type(JsonFieldType.STRING).description("패스워드"),
