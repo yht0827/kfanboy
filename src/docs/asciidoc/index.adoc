@@ -8,6 +8,10 @@
 
 == Member
 
+=== 회원 리스트 조회
+
+operation::member-controller-test/get-list[snippets='query-parameters,http-request,response-fields,http-response']
+
 === 사용 가능한 이메일
 
 operation::member-controller-test/email_not-exists[snippets='query-parameters,http-request,response-fields,http-response']

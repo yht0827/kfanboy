@@ -2,6 +2,7 @@ package com.example.kfanboy.member.controller;
 
 import static com.example.kfanboy.global.common.response.ResponseHandler.*;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.kfanboy.global.common.SuccessMessage;
 import com.example.kfanboy.global.common.annotation.CurrentUser;
 import com.example.kfanboy.global.common.annotation.LoginCheck;
+import com.example.kfanboy.global.common.response.PageResponseDto;
 import com.example.kfanboy.global.common.response.ResponseDto;
+import com.example.kfanboy.member.domain.entity.UserRole;
 import com.example.kfanboy.member.dto.JoinDto;
 import com.example.kfanboy.member.dto.LoginDto;
 import com.example.kfanboy.member.dto.UserDeleteRequestDto;
 import com.example.kfanboy.member.dto.UserResponseDto;
 import com.example.kfanboy.member.dto.UserUpdateRequestDto;
+import com.example.kfanboy.member.search.MemberSearchCondition;
 import com.example.kfanboy.member.service.LoginService;
 import com.example.kfanboy.member.service.MemberService;
 
@@ -35,6 +39,13 @@ public class MemberController {
 
 	private final LoginService loginService;
 	private final MemberService memberService;
+
+	@GetMapping("/list")
+	@LoginCheck(role = UserRole.ROLE_ADMIN)
+	public ResponseEntity<PageResponseDto<UserResponseDto>> getUserList(
+		final MemberSearchCondition memberSearchCondition, final Pageable pageable) {
+		return success(memberService.getUserList(memberSearchCondition, pageable));
+	}
 
 	@GetMapping("/email-exists")
 	public ResponseEntity<ResponseDto<?>> isExistsEmail(@Email @RequestParam("email") final String email) {

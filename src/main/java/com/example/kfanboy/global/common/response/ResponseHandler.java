@@ -12,6 +12,11 @@ import com.example.kfanboy.global.exception.CustomException;
 import jakarta.validation.ConstraintViolationException;
 
 public class ResponseHandler {
+
+	public static <T> ResponseEntity<PageResponseDto<T>> success(PageResponseDto<T> pageResponseDto) {
+		return ResponseEntity.ok().body(pageResponseDto);
+	}
+
 	public static <T> ResponseEntity<ResponseDto<T>> success(final T data) {
 		return ResponseEntity.ok()
 			.body(ResponseDto.<T>builder()

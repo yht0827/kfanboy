@@ -47,8 +47,13 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
 			// 관리자 권한 체크
 			if (loginCheck.role() == UserRole.ROLE_ADMIN) {
-				loginService.getCurrentRole()
+				UserRole userRole = loginService.getCurrentRole()
 					.orElseThrow(() -> new CustomException(ErrorMessage.NOT_AUTHORIZED));
+
+				if (!StringUtils.equals(userRole.name(), "ROLE_ADMIN")) {
+					throw new CustomException(ErrorMessage.NOT_AUTHORIZED);
+				}
+
 			}
 		}
 		return true;

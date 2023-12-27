@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 
 import com.example.kfanboy.global.AbstractControllerTest;
+import com.example.kfanboy.global.common.response.PageResponseDto;
 import com.example.kfanboy.global.exception.CustomException;
 import com.example.kfanboy.global.exception.ErrorMessage;
 import com.example.kfanboy.member.controller.MemberController;
@@ -38,6 +39,34 @@ public class MemberControllerTest extends AbstractControllerTest {
 	private MemberService memberService;
 	@MockBean
 	private LoginService loginService;
+
+	@Test
+	@DisplayName("회원 리스트 조회를 하다.")
+	void getList() throws Exception {
+		// given
+		PageResponseDto<UserResponseDto> memberListDto = getMemberListDto();
+
+		// when
+		given(memberService.getUserList(any(), any())).willReturn(memberListDto);
+
+		// then
+		mockMvc.perform(get(BASIC_URL + "/list")
+				.queryParam("nickName", "test123"))
+			.andExpect(status().isOk())
+			.andDo(restDocs.document(
+				queryParameters(
+					parameterWithName("nickName").description("닉네임")
+				),
+				customPageResponseFields(
+					List.of(
+						fieldWithPath("list[].id").type(JsonFieldType.NUMBER).description("아이디"),
+						fieldWithPath("list[].email").type(JsonFieldType.STRING).description("이메일"),
+						fieldWithPath("list[].nickName").type(JsonFieldType.STRING).description("닉네임"),
+						fieldWithPath("list[].userRole").type(JsonFieldType.STRING).description("계정 권한")
+					)
+				)));
+
+	}
 
 	@Test
 	@DisplayName("해당 이메일 사용이 가능하다.")
