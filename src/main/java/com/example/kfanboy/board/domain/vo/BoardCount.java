@@ -3,6 +3,7 @@ package com.example.kfanboy.board.domain.vo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,4 +35,10 @@ public class BoardCount {
 		this.viewCount++;
 	}
 
+	@Builder
+	public BoardCount(int likeCount, int commentCount, int viewCount) {
+		this.likeCount = likeCount;
+		this.commentCount = commentCount;
+		this.viewCount = viewCount;
+	}
 }

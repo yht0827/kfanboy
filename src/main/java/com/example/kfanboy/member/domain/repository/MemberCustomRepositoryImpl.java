@@ -5,6 +5,7 @@ import static com.example.kfanboy.member.domain.entity.QMember.*;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
@@ -25,6 +26,7 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
 
 	private final JPAQueryFactory queryFactory;
 
+	@SuppressWarnings("checkstyle:WhitespaceAround")
 	@Override
 	public PageResponseDto<UserResponseDto> getUserList(final MemberSearchCondition memberSearchCondition,
 		final Pageable pageable) {
@@ -38,23 +40,27 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
 			.from(member)
 			.where(
 				member.isDeleted.eq(false),
-				containsNickName(memberSearchCondition.nickName()))
+				startWithNickName(memberSearchCondition.nickName()))
 			.orderBy(member.id.desc())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
+
+		if (list.isEmpty()) {
+			return PageResponseDto.toDto(Page.empty());
+		}
 
 		JPAQuery<Long> count = queryFactory
 			.select(member.count())
 			.from(member)
 			.where(
 				member.isDeleted.eq(false),
-				containsNickName(memberSearchCondition.nickName()));
+				startWithNickName(memberSearchCondition.nickName()));
 
 		return PageResponseDto.toDto(PageableExecutionUtils.getPage(list, pageable, count::fetchOne));
 	}
 
-	private BooleanExpression containsNickName(final String keyword) {
+	private BooleanExpression startWithNickName(final String keyword) {
 		return StringUtils.isEmpty(keyword) ? null : member.nickName.startsWith(keyword);
 	}
 }
