@@ -10,11 +10,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder
-public record BoardUpdateResponseDto(
+public record BoardResponseDto(
 	@NotNull Long boardId, @NotBlank String title, @NotBlank String content,
 	BoardCount boardCount, UserResponseDto member, CategoryResponseDto category) {
-	public static BoardUpdateResponseDto toDto(Board board) {
-		return BoardUpdateResponseDto.builder()
+	public static BoardResponseDto toDto(Board board) {
+		return BoardResponseDto.builder()
 			.boardId(board.getBoardId())
 			.title(board.getTitle())
 			.content(board.getContent())

@@ -14,11 +14,6 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: none
-    properties:
-      hibernate:
-        format_sql: true
-        use_sql_comments: true
-        show_sql: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
   flyway:
@@ -26,6 +21,11 @@ spring:
     baseline-on-migrate: true
 --- # dev
 spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
   config:
     activate:
       on-profile: dev

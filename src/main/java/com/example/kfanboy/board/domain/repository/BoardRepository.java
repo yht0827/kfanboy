@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.example.kfanboy.board.domain.entity.Board;
 
 @Repository
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long>, BoardCustomRepository {
 }
