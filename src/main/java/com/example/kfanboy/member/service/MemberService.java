@@ -3,9 +3,11 @@ package com.example.kfanboy.member.service;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.kfanboy.global.common.response.PageResponseDto;
 import com.example.kfanboy.global.exception.CustomException;
 import com.example.kfanboy.global.exception.ErrorMessage;
 import com.example.kfanboy.global.util.PasswordEncryptor;
@@ -15,6 +17,7 @@ import com.example.kfanboy.member.dto.JoinDto;
 import com.example.kfanboy.member.dto.UserDeleteRequestDto;
 import com.example.kfanboy.member.dto.UserResponseDto;
 import com.example.kfanboy.member.dto.UserUpdateRequestDto;
+import com.example.kfanboy.member.search.MemberSearchCondition;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +27,12 @@ public class MemberService {
 
 	private final MemberRepository memberRepository;
 	private final PasswordEncryptor passwordEncryptor;
+
+	@Transactional(readOnly = true)
+	public PageResponseDto<UserResponseDto> getUserList(final MemberSearchCondition memberSearchCondition,
+		final Pageable pageable) {
+		return memberRepository.getUserList(memberSearchCondition, pageable);
+	}
 
 	@Transactional(readOnly = true)
 	public void isExistsEmail(final String email) {

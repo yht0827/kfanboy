@@ -1,5 +1,11 @@
 package com.example.kfanboy.global.member;
 
+import java.util.List;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
+
+import com.example.kfanboy.global.common.response.PageResponseDto;
 import com.example.kfanboy.member.domain.entity.Member;
 import com.example.kfanboy.member.domain.entity.UserRole;
 import com.example.kfanboy.member.dto.JoinDto;
@@ -60,4 +66,8 @@ public class MemberDtoTest {
 			.build();
 	}
 
+	public static PageResponseDto<UserResponseDto> getMemberListDto() {
+		return PageResponseDto.toDto(PageableExecutionUtils.getPage(List.of(getUserResponseDto()),
+			PageRequest.of(0, 10), () -> 1L));
+	}
 }
