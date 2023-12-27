@@ -55,6 +55,6 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
 	}
 
 	private BooleanExpression containsNickName(final String keyword) {
-		return StringUtils.isEmpty(keyword) ? null : member.nickName.startsWithIgnoreCase(keyword);
+		return StringUtils.isEmpty(keyword) ? null : member.nickName.startsWith(keyword);
 	}
 }
