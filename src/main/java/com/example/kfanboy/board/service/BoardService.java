@@ -1,5 +1,6 @@
 package com.example.kfanboy.board.service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
@@ -54,16 +55,17 @@ public class BoardService {
 
 	@Transactional
 	public BoardResponseDto update(final Long memberId, final BoardUpdateRequestDto boardUpdateRequestDto) {
-		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
-
 		Category category = categoryRepository.findById(boardUpdateRequestDto.categoryId())
 			.orElseThrow(() -> new CustomException(ErrorMessage.CATEGORY_NOT_FOUND));
 
 		Board board = boardRepository.findById(boardUpdateRequestDto.boardId())
 			.orElseThrow(() -> new CustomException(ErrorMessage.BOARD_NOT_FOUND));
 
-		return BoardResponseDto.toDto(board.updateBoard(boardUpdateRequestDto, category, member));
+		if (!Objects.equals(board.getMember().getId(), memberId)) {
+			throw new CustomException(ErrorMessage.BOARD_WRITER_NOT_MATCHED);
+		}
+
+		return BoardResponseDto.toDto(board.updateBoard(boardUpdateRequestDto, category));
 	}
 
 	@Transactional
@@ -74,6 +76,7 @@ public class BoardService {
 		boardRepository.delete(board);
 	}
 
+	@Transactional(readOnly = true)
 	public PageResponseDto<BoardResponseDto> getBoardList(final BoardSearchCondition boardSearchCondition,
 		final Pageable pageable) {
 		return boardRepository.getBoardList(boardSearchCondition, pageable);

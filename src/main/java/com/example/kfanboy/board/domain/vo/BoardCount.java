@@ -23,22 +23,22 @@ public class BoardCount {
 	@Column(name = "view_count", nullable = false)
 	private int viewCount;
 
-	public void plusLike() {
-		this.likeCount++;
-	}
-
-	public void plusComment() {
-		this.commentCount++;
-	}
-
-	public void plushView() {
-		this.viewCount++;
-	}
-
 	@Builder
 	public BoardCount(int likeCount, int commentCount, int viewCount) {
 		this.likeCount = likeCount;
 		this.commentCount = commentCount;
 		this.viewCount = viewCount;
+	}
+
+	public void changeLike(boolean addLike) {
+		this.likeCount += addLike ? 1 : -1;
+	}
+
+	public void changeComment(boolean addComment) {
+		this.commentCount += addComment ? 1 : -1;
+	}
+
+	public void changeView(boolean addView) {
+		this.viewCount += addView ? 1 : -1;
 	}
 }

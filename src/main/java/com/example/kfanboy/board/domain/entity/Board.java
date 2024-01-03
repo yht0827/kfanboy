@@ -66,11 +66,10 @@ public class Board extends BaseTimeEntity {
 		this.category = category;
 	}
 
-	public Board updateBoard(BoardUpdateRequestDto boardUpdateRequestDto, Category category, Member member) {
+	public Board updateBoard(BoardUpdateRequestDto boardUpdateRequestDto, Category category) {
 		this.title = boardUpdateRequestDto.title();
 		this.content = boardUpdateRequestDto.content();
 		this.category = category;
-		this.member = member;
 		return this;
 	}
 }

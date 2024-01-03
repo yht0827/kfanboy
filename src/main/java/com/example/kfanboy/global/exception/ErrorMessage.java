@@ -31,6 +31,7 @@ public enum ErrorMessage {
 	// Board
 	BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 게시글입니다."),
 	BOARD_NOT_CREATED(HttpStatus.BAD_REQUEST, "게시글을 생성하지 못하였습니다."),
+	BOARD_WRITER_NOT_MATCHED(HttpStatus.BAD_REQUEST, "게시글 작성자가 아닙니다."),
 
 	// Category
 	CATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 카테고리입니다."),
