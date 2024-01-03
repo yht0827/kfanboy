@@ -5,6 +5,7 @@ import static com.example.kfanboy.category.domain.entity.QCategory.*;
 import static com.example.kfanboy.member.domain.entity.QMember.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -35,28 +36,7 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
 	public PageResponseDto<BoardResponseDto> getBoardList(BoardSearchCondition boardSearchCondition,
 		Pageable pageable) {
 
-		List<BoardResponseDto> list = jpaQueryFactory.select(Projections.constructor(BoardResponseDto.class,
-				board.boardId,
-				board.title,
-				board.content,
-				Projections.constructor(BoardCount.class,
-					board.boardCount.likeCount,
-					board.boardCount.commentCount,
-					board.boardCount.viewCount),
-				Projections.constructor(UserResponseDto.class,
-					board.member.id,
-					board.member.email,
-					board.member.nickName,
-					board.member.userRole),
-				Projections.constructor(CategoryResponseDto.class,
-					board.category.categoryId,
-					board.category.categoryName)
-			))
-			.from(board)
-			.innerJoin(board.member, member)
-			.innerJoin(board.category, category)
-			.where(
-				startWithTitle(boardSearchCondition.title()),
+		List<BoardResponseDto> list = selectBoardResponseDto().where(startWithTitle(boardSearchCondition.title()),
 				startWithWriterNickName(boardSearchCondition.nickName()))
 			.orderBy(board.boardId.desc())
 			.offset(pageable.getOffset())
@@ -69,11 +49,15 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
 
 		JPAQuery<Long> count = jpaQueryFactory.select(board.count())
 			.from(board)
-			.where(
-				startWithTitle(boardSearchCondition.title()),
+			.where(startWithTitle(boardSearchCondition.title()),
 				startWithWriterNickName(boardSearchCondition.nickName()));
 
 		return PageResponseDto.toDto(PageableExecutionUtils.getPage(list, pageable, count::fetchOne));
+	}
+
+	@Override
+	public Optional<BoardResponseDto> findByBoardId(Long boardId) {
+		return Optional.ofNullable(selectBoardResponseDto().where(board.boardId.eq(boardId)).fetchFirst());
 	}
 
 	private BooleanExpression startWithWriterNickName(final String keyword) {
@@ -84,4 +68,16 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
 		return StringUtils.isEmpty(keyword) ? null : board.title.startsWith(keyword);
 	}
 
+	private JPAQuery<BoardResponseDto> selectBoardResponseDto() {
+		return jpaQueryFactory.select(
+				Projections.constructor(BoardResponseDto.class, board.boardId, board.title, board.content,
+					Projections.constructor(BoardCount.class, board.boardCount.likeCount, board.boardCount.commentCount,
+						board.boardCount.viewCount),
+					Projections.constructor(UserResponseDto.class, member.memberId, member.email, member.nickName,
+						member.userRole),
+					Projections.constructor(CategoryResponseDto.class, category.categoryId, category.categoryName)))
+			.from(board)
+			.innerJoin(member).on(board.memberId.eq(member.memberId))
+			.innerJoin(category).on(board.categoryId.eq(category.categoryId));
+	}
 }

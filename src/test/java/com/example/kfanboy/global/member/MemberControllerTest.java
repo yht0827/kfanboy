@@ -59,7 +59,7 @@ public class MemberControllerTest extends AbstractControllerTest {
 				),
 				customPageResponseFields(
 					List.of(
-						fieldWithPath("list[].id").type(JsonFieldType.NUMBER).description("아이디"),
+						fieldWithPath("list[].memberId").type(JsonFieldType.NUMBER).description("아이디"),
 						fieldWithPath("list[].email").type(JsonFieldType.STRING).description("이메일"),
 						fieldWithPath("list[].nickName").type(JsonFieldType.STRING).description("닉네임"),
 						fieldWithPath("list[].userRole").type(JsonFieldType.STRING).description("계정 권한")
@@ -125,7 +125,7 @@ public class MemberControllerTest extends AbstractControllerTest {
 			.andExpect(status().isOk())
 			.andDo(restDocs.document(
 				customResponseFields(
-					List.of(fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("아이디"),
+					List.of(fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("아이디"),
 						fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
 						fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("닉네임"),
 						fieldWithPath("data.userRole").type(JsonFieldType.STRING).description("계정역할")))
@@ -226,7 +226,7 @@ public class MemberControllerTest extends AbstractControllerTest {
 					fieldWithPath("password").type(JsonFieldType.STRING).description("패스워드"),
 					fieldWithPath("password2").type(JsonFieldType.STRING).description("패스워드 확인")),
 				customResponseFields(
-					List.of(fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("아이디"),
+					List.of(fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("아이디"),
 						fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
 						fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("닉네임"),
 						fieldWithPath("data.userRole").type(JsonFieldType.STRING).description("계정역할")))

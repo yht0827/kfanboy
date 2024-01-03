@@ -32,16 +32,15 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
 		final Pageable pageable) {
 
 		List<UserResponseDto> list = queryFactory.select(Projections.constructor(UserResponseDto.class,
-				member.id,
+				member.memberId,
 				member.email,
 				member.nickName,
 				member.userRole
 			))
 			.from(member)
 			.where(
-				member.isDeleted.eq(false),
-				startWithNickName(memberSearchCondition.nickName()))
-			.orderBy(member.id.desc())
+				likeNickName(memberSearchCondition.nickName()))
+			.orderBy(member.memberId.desc())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
@@ -54,13 +53,12 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
 			.select(member.count())
 			.from(member)
 			.where(
-				member.isDeleted.eq(false),
-				startWithNickName(memberSearchCondition.nickName()));
+				likeNickName(memberSearchCondition.nickName()));
 
 		return PageResponseDto.toDto(PageableExecutionUtils.getPage(list, pageable, count::fetchOne));
 	}
 
-	private BooleanExpression startWithNickName(final String keyword) {
-		return StringUtils.isEmpty(keyword) ? null : member.nickName.startsWith(keyword);
+	private BooleanExpression likeNickName(final String keyword) {
+		return StringUtils.isEmpty(keyword) ? null : member.nickName.like(keyword);
 	}
 }

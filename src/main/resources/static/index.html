@@ -517,7 +517,7 @@ Host: localhost:8080</code></pre>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>list[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>list[].memberId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
 </tr>
@@ -548,11 +548,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 211
+Content-Length: 217
 
 {
   "list" : [ {
-    "id" : 1,
+    "memberId" : 1,
     "email" : "test123@naver.com",
     "nickName" : "test123",
     "userRole" : "ROLE_USER"
@@ -1172,7 +1172,7 @@ Host: localhost:8080</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">메세지</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.memberId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
 </tr>
@@ -1203,13 +1203,13 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 169
+Content-Length: 175
 
 {
   "result" : true,
   "message" : "성공",
   "data" : {
-    "id" : 1,
+    "memberId" : 1,
     "email" : "test123@naver.com",
     "nickName" : "test123",
     "userRole" : "ROLE_USER"
@@ -1304,7 +1304,7 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock">메세지</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.memberId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
 </tr>
@@ -1335,13 +1335,13 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 189
+Content-Length: 195
 
 {
   "result" : true,
   "message" : "계정 업데이트 성공",
   "data" : {
-    "id" : 1,
+    "memberId" : 1,
     "email" : "test123@naver.com",
     "nickName" : "test123",
     "userRole" : "ROLE_USER"

@@ -27,7 +27,7 @@ public class MemberDtoTest {
 
 	public static UserResponseDto getUserResponseDto() {
 		return UserResponseDto.builder()
-			.id(1L)
+			.memberId(1L)
 			.email("test123@naver.com")
 			.nickName("test123")
 			.userRole(UserRole.ROLE_USER)
@@ -57,11 +57,10 @@ public class MemberDtoTest {
 
 	public static Member getMember() {
 		return Member.builder()
-			.id(1L)
+			.memberId(1L)
 			.email("test1234@naver.com")
 			.password("Qwe123!@#")
 			.nickName("test1234")
-			.isDeleted(false)
 			.userRole(UserRole.ROLE_USER)
 			.build();
 	}

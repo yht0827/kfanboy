@@ -2,6 +2,8 @@ package com.example.kfanboy.member.domain.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.validator.constraints.Length;
 
 import com.example.kfanboy.global.common.BaseTimeEntity;
@@ -27,11 +29,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "member")
+@SQLRestriction("deleted_at is null")
+@SQLDelete(sql = "update member set deleted_at=current_timestamp where member_id = ?")
 public class Member extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name = "member_id")
+	private Long memberId;
 
 	@Email
 	@NotBlank
@@ -60,21 +65,20 @@ public class Member extends BaseTimeEntity {
 	@Column(name = "user_role", nullable = false)
 	private UserRole userRole;
 
-	@NotNull
-	@Column(name = "is_deleted", nullable = false)
-	private Boolean isDeleted;
+	@Column(name = "deleted_at")
+	private LocalDateTime deletedAt;
 
 	@Builder
-	public Member(Long id, String email, String password, String nickName, LocalDateTime lastLoginAt,
-		LocalDateTime unregisteredAt, UserRole userRole, Boolean isDeleted) {
-		this.id = id;
+	public Member(Long memberId, String email, String password, String nickName, LocalDateTime lastLoginAt,
+		LocalDateTime unregisteredAt, UserRole userRole, LocalDateTime deletedAt) {
+		this.memberId = memberId;
 		this.email = email;
 		this.password = password;
 		this.nickName = nickName;
 		this.lastLoginAt = lastLoginAt;
 		this.unregisteredAt = unregisteredAt;
 		this.userRole = userRole;
-		this.isDeleted = isDeleted;
+		this.deletedAt = deletedAt;
 	}
 
 	public void updateLastLogin() {
@@ -88,8 +92,4 @@ public class Member extends BaseTimeEntity {
 		return this;
 	}
 
-	public void deleteUser() {
-		this.unregisteredAt = LocalDateTime.now();
-		this.isDeleted = true;
-	}
 }

@@ -49,7 +49,7 @@ public class LoginService {
 	 * 메모리에 세션 저장
 	 */
 	private void setUserSession(final Member loginUser) {
-		httpSession.setAttribute(SessionKey.USER_ID, loginUser.getId());
+		httpSession.setAttribute(SessionKey.USER_ID, loginUser.getMemberId());
 		httpSession.setAttribute(SessionKey.USER_ROLE, loginUser.getUserRole());
 	}
 
