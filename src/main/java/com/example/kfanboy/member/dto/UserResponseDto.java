@@ -10,10 +10,10 @@ import lombok.Builder;
 
 @Builder
 public record UserResponseDto(
-	@NotNull Long id, @Email String email, @NotBlank String nickName, @NotBlank UserRole userRole) {
+	@NotNull Long memberId, @Email String email, @NotBlank String nickName, @NotBlank UserRole userRole) {
 	public static UserResponseDto toDto(Member member) {
 		return UserResponseDto.builder()
-			.id(member.getId())
+			.memberId(member.getMemberId())
 			.email(member.getEmail())
 			.nickName(member.getNickName())
 			.userRole(member.getUserRole())

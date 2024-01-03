@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,9 +30,11 @@ public class Like extends BaseTimeEntity {
 	@Column(name = "like_id")
 	private Long likeId;
 
+	@NotNull
 	@Column(name = "member_id")
 	private Long memberId;
 
+	@NotNull
 	@Column(name = "board_id")
 	private Long boardId;
 

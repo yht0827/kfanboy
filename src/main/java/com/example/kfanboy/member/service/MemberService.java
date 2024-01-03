@@ -60,7 +60,7 @@ public class MemberService {
 		Member member = memberRepository.save(joinDto.toEntity(passwordEncryptor.encrypt(joinDto.password())));
 
 		Optional.of(member)
-			.filter(m -> m.getId() > 0)
+			.filter(m -> m.getMemberId() > 0)
 			.orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_CREATED));
 	}
 
@@ -77,7 +77,7 @@ public class MemberService {
 	public void delete(final Long id, final UserDeleteRequestDto userDeleteRequestDto) {
 		Member member = findById(id);
 		passwordEncryptor.validatePassword(userDeleteRequestDto.password(), member.getPassword());
-		member.deleteUser();
+		memberRepository.delete(member);
 	}
 
 	private Member findById(final Long id) {

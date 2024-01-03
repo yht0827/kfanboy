@@ -16,7 +16,6 @@ public record JoinDto(
 			.password(encryptPassword)
 			.nickName(this.nickName())
 			.userRole(UserRole.ROLE_USER)
-			.isDeleted(false)
 			.build();
 	}
 }

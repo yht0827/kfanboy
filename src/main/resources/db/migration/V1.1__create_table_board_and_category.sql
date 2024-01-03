@@ -9,6 +9,7 @@ CREATE table board
     view_count    integer      not null,
     created_at    datetime(6)  not null default now(6),
     updated_at    datetime(6)  not null default now(6),
+    deleted_at    datetime(6)           default null,
     member_id     bigint       not null,
     category_id   bigint       not null,
     primary key (board_id)

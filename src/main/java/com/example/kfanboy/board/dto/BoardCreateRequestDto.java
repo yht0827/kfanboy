@@ -18,8 +18,8 @@ public record BoardCreateRequestDto(
 		return Board.builder()
 			.title(this.title)
 			.content(this.content)
-			.category(category)
-			.member(member)
+			.categoryId(category.getCategoryId())
+			.memberId(member.getMemberId())
 			.build();
 	}
 
