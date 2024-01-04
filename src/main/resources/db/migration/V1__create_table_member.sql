@@ -4,7 +4,7 @@ create table member
     member_id       bigint       not null auto_increment,
     email           varchar(50)  not null unique,
     password        varchar(100) not null,
-    nick_name       varchar(30)  not null unique,
+    nick_name       varchar(30)  not null,
     created_at      datetime(6)  not null default now(6),
     updated_at      datetime(6)  not null default now(6),
     last_login_at   datetime(6),

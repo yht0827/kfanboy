@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,16 +54,15 @@ public class BoardController {
 	@PostMapping
 	public ResponseEntity<ResponseDto<?>> createBoard(@CurrentUser final Long memberId,
 		@Valid @RequestBody final BoardCreateRequestDto boardCreateRequestDto) {
-		boardService.create(memberId, boardCreateRequestDto);
-		return success(SuccessMessage.CREATE_BOARD_SUCCESS);
+		return create(boardService.create(memberId, boardCreateRequestDto));
 	}
 
 	@LoginCheck
-	@PutMapping
-	public ResponseEntity<ResponseDto<BoardResponseDto>> updateBoard(
-		@CurrentUser final Long memberId, @Valid @RequestBody final BoardUpdateRequestDto boardUpdateRequestDto) {
-		return success(boardService.update(memberId, boardUpdateRequestDto),
-			SuccessMessage.UPDATE_BOARD_SUCCESS);
+	@PatchMapping
+	public ResponseEntity<ResponseDto<?>> updateBoard(@CurrentUser final Long memberId,
+		@Valid @RequestBody final BoardUpdateRequestDto boardUpdateRequestDto) {
+		boardService.update(memberId, boardUpdateRequestDto);
+		return success(SuccessMessage.UPDATE_BOARD_SUCCESS);
 	}
 
 	@LoginCheck
@@ -83,8 +82,9 @@ public class BoardController {
 
 	@LoginCheck
 	@PostMapping("/like")
-	public ResponseEntity<ResponseDto<LikeResponseDto>> updateLike(@CurrentUser final Long memberId,
+	public ResponseEntity<ResponseDto<?>> updateLike(@CurrentUser final Long memberId,
 		@Valid @RequestBody final LikeRequestDto likeRequestDto) {
-		return success(likeService.updateLike(memberId, likeRequestDto.boardId()));
+		likeService.updateLike(memberId, likeRequestDto.boardId());
+		return success(SuccessMessage.UPDATE_LIKE_SUCCESS);
 	}
 }

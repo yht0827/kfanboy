@@ -52,25 +52,21 @@ public class MemberService {
 	}
 
 	@Transactional
-	public void join(final JoinDto joinDto) {
+	public Long join(final JoinDto joinDto) {
 		isExistsEmail(joinDto.email());
 		isEqualPassword(joinDto.password(), joinDto.password2());
 
 		// 비밀번호 암호화 후 저장
-		Member member = memberRepository.save(joinDto.toEntity(passwordEncryptor.encrypt(joinDto.password())));
-
-		Optional.of(member)
-			.filter(m -> m.getMemberId() > 0)
-			.orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_CREATED));
+		return memberRepository.save(joinDto.toEntity(passwordEncryptor.encrypt(joinDto.password()))).getMemberId();
 	}
 
 	@Transactional
-	public UserResponseDto update(final Long id, final UserUpdateRequestDto userUpdateRequestDto) {
+	public void update(final Long id, final UserUpdateRequestDto userUpdateRequestDto) {
 		isEqualPassword(userUpdateRequestDto.password(), userUpdateRequestDto.password2());
 
-		Member oldMember = findById(id);
-		return UserResponseDto.toDto(
-			oldMember.updateMember(userUpdateRequestDto, passwordEncryptor.encrypt(userUpdateRequestDto.password())));
+		Member member = findById(id);
+
+		member.updateMember(userUpdateRequestDto, passwordEncryptor.encrypt(userUpdateRequestDto.password()));
 	}
 
 	@Transactional

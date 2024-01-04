@@ -61,8 +61,7 @@ public class MemberController {
 
 	@PostMapping(value = "/join")
 	public ResponseEntity<ResponseDto<?>> join(@RequestBody @Valid final JoinDto joinDto) {
-		memberService.join(joinDto);
-		return success(SuccessMessage.CREATE_USER_SUCCESS);
+		return create(memberService.join(joinDto));
 	}
 
 	@PostMapping(value = "/login")
@@ -80,9 +79,10 @@ public class MemberController {
 
 	@LoginCheck
 	@PutMapping
-	public ResponseEntity<ResponseDto<UserResponseDto>> update(@CurrentUser final Long id,
+	public ResponseEntity<ResponseDto<?>> update(@CurrentUser final Long id,
 		@RequestBody @Valid final UserUpdateRequestDto requestDto) {
-		return success(memberService.update(id, requestDto), SuccessMessage.UPDATE_USER_SUCCESS);
+		memberService.update(id, requestDto);
+		return success(SuccessMessage.UPDATE_USER_SUCCESS);
 	}
 
 	@LoginCheck

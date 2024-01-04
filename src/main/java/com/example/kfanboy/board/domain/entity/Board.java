@@ -69,10 +69,9 @@ public class Board extends BaseTimeEntity {
 		this.deletedAt = deletedAt;
 	}
 
-	public Board updateBoard(BoardUpdateRequestDto boardUpdateRequestDto, Long categoryId) {
+	public void updateBoard(BoardUpdateRequestDto boardUpdateRequestDto, Long categoryId) {
 		this.title = boardUpdateRequestDto.title();
 		this.content = boardUpdateRequestDto.content();
 		this.categoryId = categoryId;
-		return this;
 	}
 }
