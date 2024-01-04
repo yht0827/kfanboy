@@ -24,9 +24,6 @@ import com.example.kfanboy.global.common.annotation.CurrentUser;
 import com.example.kfanboy.global.common.annotation.LoginCheck;
 import com.example.kfanboy.global.common.response.PageResponseDto;
 import com.example.kfanboy.global.common.response.ResponseDto;
-import com.example.kfanboy.like.dto.LikeRequestDto;
-import com.example.kfanboy.like.dto.LikeResponseDto;
-import com.example.kfanboy.like.service.LikeService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +34,6 @@ import lombok.RequiredArgsConstructor;
 public class BoardController {
 
 	private final BoardService boardService;
-	private final LikeService likeService;
 
 	@GetMapping("/{boardId}")
 	public ResponseEntity<ResponseDto<BoardResponseDto>> getBoard(@PathVariable final Long boardId) {
@@ -71,20 +67,5 @@ public class BoardController {
 		@Valid @RequestBody final BoardDeleteRequestDto boardDeleteRequestDto) {
 		boardService.delete(boardDeleteRequestDto);
 		return success(SuccessMessage.DELETE_BOARD_SUCCESS);
-	}
-
-	@LoginCheck
-	@GetMapping("/{boardId}/like")
-	public ResponseEntity<ResponseDto<LikeResponseDto>> getLike(@CurrentUser Long memberId,
-		@PathVariable final Long boardId) {
-		return success(likeService.getLike(memberId, boardId));
-	}
-
-	@LoginCheck
-	@PostMapping("/like")
-	public ResponseEntity<ResponseDto<?>> updateLike(@CurrentUser final Long memberId,
-		@Valid @RequestBody final LikeRequestDto likeRequestDto) {
-		likeService.updateLike(memberId, likeRequestDto.boardId());
-		return success(SuccessMessage.UPDATE_LIKE_SUCCESS);
 	}
 }

@@ -16,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -35,11 +36,11 @@ public class Board extends BaseTimeEntity {
 	@Column(name = "board_id")
 	private Long boardId;
 
-	@NotNull
+	@NotBlank
 	@Column(nullable = false)
 	private String title;
 
-	@NotNull
+	@NotBlank
 	@Column(columnDefinition = "TEXT", nullable = false)
 	private String content;
 

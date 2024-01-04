@@ -3,8 +3,7 @@ package com.example.kfanboy.like.domain.entity;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.SQLDelete;
-
-import com.example.kfanboy.global.common.BaseTimeEntity;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "board_like")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "update board_like set deleted_at=current_timestamp where like_id = ?")
-public class Like extends BaseTimeEntity {
+public class Like {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,14 +37,19 @@ public class Like extends BaseTimeEntity {
 	@Column(name = "board_id")
 	private Long boardId;
 
+	@LastModifiedDate
+	@Column(name = "updated_at")
+	private LocalDateTime updatedAt;
+
 	@Column(name = "deleted_at")
 	private LocalDateTime deletedAt;
 
 	@Builder
-	public Like(Long likeId, Long memberId, Long boardId, LocalDateTime deletedAt) {
+	public Like(Long likeId, Long memberId, Long boardId, LocalDateTime updatedAt, LocalDateTime deletedAt) {
 		this.likeId = likeId;
 		this.memberId = memberId;
 		this.boardId = boardId;
+		this.updatedAt = updatedAt;
 		this.deletedAt = deletedAt;
 	}
 }
