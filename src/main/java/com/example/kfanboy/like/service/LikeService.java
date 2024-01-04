@@ -28,13 +28,11 @@ public class LikeService {
 
 		boolean isLiked = like.isPresent() && like.get().getDeletedAt() == null;
 
-		return LikeResponseDto.builder()
-			.isLiked(isLiked)
-			.build();
+		return LikeResponseDto.builder().isLiked(isLiked).build();
 	}
 
 	@Transactional
-	public LikeResponseDto updateLike(final Long memberId, final Long boardId) {
+	public void updateLike(final Long memberId, final Long boardId) {
 		Optional<Like> like = likeRepository.findByMemberIdAndBoardId(memberId, boardId);
 
 		boolean isLiked = false;
@@ -58,8 +56,5 @@ public class LikeService {
 			.orElseThrow(() -> new CustomException(ErrorMessage.BOARD_NOT_FOUND));
 
 		board.getBoardCount().changeLike(isLiked); // 좋아요 개수 카운트 업데이트
-		return LikeResponseDto.builder()
-			.isLiked(isLiked)
-			.build();
 	}
 }

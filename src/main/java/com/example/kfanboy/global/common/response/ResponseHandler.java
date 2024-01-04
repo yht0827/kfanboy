@@ -38,6 +38,14 @@ public class ResponseHandler {
 				.build());
 	}
 
+	public static ResponseEntity<ResponseDto<?>> create(final Long id) {
+		return ResponseEntity.status(HttpStatus.CREATED)
+			.body(ResponseDto.builder()
+				.data(CreateDto.builder().id(id).build())
+				.message(SuccessMessage.CREATE.getMessage())
+				.build());
+	}
+
 	public static ResponseEntity<ErrorResponseDto> error(final CustomException exception) {
 		return ResponseEntity.status(exception.getStatus())
 			.body(ErrorResponseDto.builder()

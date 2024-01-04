@@ -50,7 +50,7 @@ public class Member extends BaseTimeEntity {
 	private String password;
 
 	@NotBlank
-	@Column(name = "nick_name", nullable = false, unique = true, length = 30)
+	@Column(name = "nick_name", nullable = false, length = 30)
 	@Length(min = 1, max = 30)
 	private String nickName;
 
@@ -85,11 +85,9 @@ public class Member extends BaseTimeEntity {
 		this.lastLoginAt = LocalDateTime.now();
 	}
 
-	public Member updateMember(UserUpdateRequestDto userUpdateRequestDto, String encryptPassword) {
+	public void updateMember(UserUpdateRequestDto userUpdateRequestDto, String encryptPassword) {
 		this.nickName = userUpdateRequestDto.nickName();
 		this.password = encryptPassword;
-
-		return this;
 	}
 
 }

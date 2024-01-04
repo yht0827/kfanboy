@@ -1,6 +1,6 @@
 package com.example.kfanboy.board.service;
 
-import java.util.Optional;
+import java.util.Objects;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -37,34 +37,37 @@ public class BoardService {
 			.orElseThrow(() -> new CustomException(ErrorMessage.BOARD_NOT_FOUND));
 	}
 
+	@Transactional(readOnly = true)
+	public PageResponseDto<BoardResponseDto> getBoardList(final BoardSearchCondition boardSearchCondition,
+		final Pageable pageable) {
+		return boardRepository.getBoardList(boardSearchCondition, pageable);
+	}
+
 	@Transactional
-	public void create(final Long memberId, final BoardCreateRequestDto boardCreateRequestDto) {
+	public Long create(final Long memberId, final BoardCreateRequestDto boardCreateRequestDto) {
 		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
 
 		Category category = categoryRepository.findById(boardCreateRequestDto.categoryId())
 			.orElseThrow(() -> new CustomException(ErrorMessage.CATEGORY_NOT_FOUND));
 
-		Board board = boardRepository.save(boardCreateRequestDto.toEntity(member, category));
-
-		Optional.of(board)
-			.filter(b -> b.getBoardId() > 0)
-			.orElseThrow(() -> new CustomException(ErrorMessage.BOARD_NOT_CREATED));
+		return boardRepository.save(boardCreateRequestDto.toEntity(member, category)).getBoardId();
 	}
 
 	@Transactional
-	public BoardResponseDto update(final Long memberId, final BoardUpdateRequestDto boardUpdateRequestDto) {
-		Category category = categoryRepository.findById(boardUpdateRequestDto.categoryId())
-			.orElseThrow(() -> new CustomException(ErrorMessage.CATEGORY_NOT_FOUND));
+	public void update(final Long memberId, final BoardUpdateRequestDto boardUpdateRequestDto) {
 
 		Board board = boardRepository.findById(boardUpdateRequestDto.boardId())
 			.orElseThrow(() -> new CustomException(ErrorMessage.BOARD_NOT_FOUND));
 
-		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
+		if (!Objects.equals(board.getMemberId(), memberId)) {
+			throw new CustomException(ErrorMessage.BOARD_WRITER_NOT_MATCHED);
+		}
 
-		return BoardResponseDto.toDto(
-			board.updateBoard(boardUpdateRequestDto, category.getCategoryId()), member, category);
+		Category category = categoryRepository.findById(boardUpdateRequestDto.categoryId())
+			.orElseThrow(() -> new CustomException(ErrorMessage.CATEGORY_NOT_FOUND));
+
+		board.updateBoard(boardUpdateRequestDto, category.getCategoryId());
 	}
 
 	@Transactional
@@ -73,11 +76,5 @@ public class BoardService {
 			.orElseThrow(() -> new CustomException(ErrorMessage.BOARD_NOT_FOUND));
 
 		boardRepository.delete(board);
-	}
-
-	@Transactional(readOnly = true)
-	public PageResponseDto<BoardResponseDto> getBoardList(final BoardSearchCondition boardSearchCondition,
-		final Pageable pageable) {
-		return boardRepository.getBoardList(boardSearchCondition, pageable);
 	}
 }

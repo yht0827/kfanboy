@@ -139,18 +139,19 @@ public class MemberControllerTest extends AbstractControllerTest {
 		JoinDto joinDto = getJoinDto();
 
 		// when
-		doNothing().when(memberService).join(joinDto);
+		given(memberService.join(joinDto)).willReturn(1L);
 
 		// then
 		mockMvc.perform(post(BASIC_URL + "/join").contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(joinDto)))
-			.andExpect(status().isOk())
+			.andExpect(status().isCreated())
 			.andDo(restDocs.document(
 				requestFields(fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
 					fieldWithPath("password").type(JsonFieldType.STRING).description("패스워드"),
 					fieldWithPath("password2").type(JsonFieldType.STRING).description("패스워드 확인"),
 					fieldWithPath("nickName").type(JsonFieldType.STRING).description("닉네임"))
-				, defaultResponseFields()));
+				, customResponseFields(
+					List.of(fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("아이디")))));
 	}
 
 	@Test
@@ -213,24 +214,18 @@ public class MemberControllerTest extends AbstractControllerTest {
 		UserUpdateRequestDto userUpdateRequestDto = getUserUpdateRequestDto();
 
 		// when
-		given(memberService.update(any(), any())).willReturn(getUserResponseDto());
+		doNothing().when(memberService).update(any(), any());
 
 		// then
 		mockMvc.perform(put(BASIC_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(userUpdateRequestDto)))
 			.andExpect(status().isOk())
-			.andDo(restDocs.document(
-				requestFields(
+			.andDo(restDocs.document(requestFields(
 					fieldWithPath("nickName").type(JsonFieldType.STRING).description("닉네임"),
 					fieldWithPath("password").type(JsonFieldType.STRING).description("패스워드"),
 					fieldWithPath("password2").type(JsonFieldType.STRING).description("패스워드 확인")),
-				customResponseFields(
-					List.of(fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("아이디"),
-						fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
-						fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("닉네임"),
-						fieldWithPath("data.userRole").type(JsonFieldType.STRING).description("계정역할")))
-			));
+				defaultResponseFields()));
 	}
 
 	@Test
