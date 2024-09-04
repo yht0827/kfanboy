@@ -8,6 +8,8 @@ create table comment
     comment_level       integer      not null,
     board_id            bigint       not null,
     parent_id           bigint       not null,
+    member_id           bigint       not null,
+    is_deleted          boolean      not null,
     created_at          datetime(6)  not null default now(6),
     updated_at          datetime(6)  not null default now(6),
     deleted_at          datetime(6),

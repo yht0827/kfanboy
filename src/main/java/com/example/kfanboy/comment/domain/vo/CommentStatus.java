@@ -11,24 +11,48 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentStatus {
 
-	@Column(name = "commentGroup", nullable = false)
-	private int commentGroup;
+	/**
+	 * 댓글 그룹 번호
+	 */
+	@Column(name = "comment_group", nullable = false)
+	private Long commentGroup;
 
-	@Column(name = "comment_group_order", nullable = false)
-	private int commentGroupOrder;
-
+	/**
+	 * 댓글 레벨 (들여 쓰기)
+	 */
 	@Column(name = "comment_level", nullable = false)
-	private int commentLevel;
+	private Long commentLevel;
 
+	/**
+	 * 댓글 그룹 순서
+	 */
+	@Column(name = "comment_group_order", nullable = false)
+	private Long commentGroupOrder;
+
+	/**
+	 * 부모 댓글 ID
+	 */
+	@Column(name = "parent_id", nullable = false)
+	private Long parentId;
+
+	/**
+	 * 자식 댓글 개수
+	 */
 	@Column(name = "child_count", nullable = false)
-	private int childCount;
+	private Long childCount;
 
 	@Builder
-	public CommentStatus(int commentGroup, int commentGroupOrder, int commentLevel, int childCount) {
+	public CommentStatus(Long commentGroup, Long commentLevel, Long commentGroupOrder, Long parentId, Long childCount) {
 		this.commentGroup = commentGroup;
-		this.commentGroupOrder = commentGroupOrder;
 		this.commentLevel = commentLevel;
+		this.commentGroupOrder = commentGroupOrder;
+		this.parentId = parentId;
 		this.childCount = childCount;
 	}
+
+	public void updateChildCount(boolean addCount) {
+		this.childCount += addCount ? 1 : -1;
+	}
+
 }
 

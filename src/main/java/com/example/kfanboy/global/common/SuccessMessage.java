@@ -25,6 +25,10 @@ public enum SuccessMessage {
 	// Like
 	UPDATE_LIKE_SUCCESS("좋아요 업데이트 성공"),
 
+	// Comment
+	UPDATE_COMMENT_SUCCESS("댓글 업데이트 성공"),
+	DELETE_COMMENT_SUCCESS("댓글 삭제 성공"),
+
 	DUMMY("");
 
 	private final String message;

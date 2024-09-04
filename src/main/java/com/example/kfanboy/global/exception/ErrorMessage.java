@@ -24,17 +24,18 @@ public enum ErrorMessage {
 	USER_NOT_AUTHORIZED(HttpStatus.UNAUTHORIZED, "해당 계정은 권한이 없습니다."),
 	INCORRECT_PASSWORD(HttpStatus.UNAUTHORIZED, "비밀번호가 서로 일치하지 않습니다."),
 	INCORRECT_PASSWORD_OR_USER_EMAIL(HttpStatus.UNAUTHORIZED, "비밀번호가 틀렸거나, 해당 계정이 없습니다."),
-	DUPLICATE_ACCOUNT_USER(HttpStatus.UNAUTHORIZED, "해당 계정이 존재합니다."),
-	USER_NOT_CREATED(HttpStatus.BAD_REQUEST, "계정을 생성하지 못하였습니다."),
 	NOT_LOGIN(HttpStatus.UNAUTHORIZED, "로그인 이후 사용 가능"),
 
 	// Board
 	BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 게시글입니다."),
-	BOARD_NOT_CREATED(HttpStatus.BAD_REQUEST, "게시글을 생성하지 못하였습니다."),
 	BOARD_WRITER_NOT_MATCHED(HttpStatus.BAD_REQUEST, "게시글 작성자가 아닙니다."),
 
 	// Category
 	CATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 카테고리입니다."),
+
+	// Comment
+	COMMENT_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 댓글입니다."),
+	COMMENT_WRITER_NOT_MATCHED(HttpStatus.BAD_REQUEST, "댓글 작성자가 아닙니다."),
 
 	DUMMY(null, "");
 

@@ -71,9 +71,13 @@ public class BoardService {
 	}
 
 	@Transactional
-	public void delete(final BoardDeleteRequestDto boardDeleteRequestDto) {
+	public void delete(final Long memberId, final BoardDeleteRequestDto boardDeleteRequestDto) {
 		Board board = boardRepository.findById(boardDeleteRequestDto.boardId())
 			.orElseThrow(() -> new CustomException(ErrorMessage.BOARD_NOT_FOUND));
+
+		if (!Objects.equals(board.getMemberId(), memberId)) {
+			throw new CustomException(ErrorMessage.BOARD_WRITER_NOT_MATCHED);
+		}
 
 		boardRepository.delete(board);
 	}

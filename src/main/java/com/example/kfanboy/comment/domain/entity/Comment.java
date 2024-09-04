@@ -45,24 +45,34 @@ public class Comment extends BaseTimeEntity {
 
 	@Column(name = "board_id", nullable = false)
 	private Long boardId;
-	@Column(name = "parent_id", nullable = false)
-	private Long parentId;
+
+	@Column(name = "member_id", nullable = false)
+	private Long memberId;
+
+	@Column(name = "is_deleted", nullable = false)
+	private Boolean isDeleted;
 
 	@Column(name = "deleted_at")
 	private LocalDateTime deletedAt;
 
 	@Builder
-	public Comment(Long commentId, String content, Long boardId, Long parentId, LocalDateTime deletedAt) {
+	public Comment(Long commentId, String content, CommentStatus commentStatus, Long boardId, Long memberId,
+		Boolean isDeleted, LocalDateTime deletedAt) {
 		this.commentId = commentId;
 		this.content = content;
-		this.commentStatus = new CommentStatus();
+		this.commentStatus = commentStatus;
 		this.boardId = boardId;
-		this.parentId = parentId;
+		this.memberId = memberId;
+		this.isDeleted = isDeleted;
 		this.deletedAt = deletedAt;
 	}
 
-	public void updateComment() {
+	public void updateContent(String content) {
+		this.content = content;
+	}
 
+	public void updateViewDelete() {
+		this.isDeleted = true;
 	}
 
 }

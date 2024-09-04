@@ -63,9 +63,9 @@ public class BoardController {
 
 	@LoginCheck
 	@DeleteMapping
-	public ResponseEntity<ResponseDto<?>> deleteBoard(
+	public ResponseEntity<ResponseDto<?>> deleteBoard(@CurrentUser final Long memberId,
 		@Valid @RequestBody final BoardDeleteRequestDto boardDeleteRequestDto) {
-		boardService.delete(boardDeleteRequestDto);
+		boardService.delete(memberId, boardDeleteRequestDto);
 		return success(SuccessMessage.DELETE_BOARD_SUCCESS);
 	}
 }
