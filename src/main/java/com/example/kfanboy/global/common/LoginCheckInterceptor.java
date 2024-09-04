@@ -51,7 +51,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 					.orElseThrow(() -> new CustomException(ErrorMessage.NOT_AUTHORIZED));
 
 				if (!StringUtils.equals(userRole.name(), "ROLE_ADMIN")) {
-					throw new CustomException(ErrorMessage.NOT_AUTHORIZED);
+					throw new CustomException(ErrorMessage.USER_NOT_AUTHORIZED);
 				}
 
 			}

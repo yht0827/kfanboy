@@ -5,7 +5,6 @@ create table board_like
     board_id   bigint      not null,
     member_id  bigint      not null,
     deleted_at datetime(6)          default null,
-    created_at datetime(6) not null default now(6),
     updated_at datetime(6) not null default now(6),
     primary key (like_id)
 );

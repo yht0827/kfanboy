@@ -20,6 +20,8 @@ create table category
 (
     category_id   bigint      not null auto_increment,
     category_name varchar(50) not null,
+    created_at    datetime(6) not null default now(6),
+    updated_at    datetime(6) not null default now(6),
     primary key (category_id)
 );
 
