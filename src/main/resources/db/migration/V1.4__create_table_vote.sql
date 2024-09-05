@@ -19,5 +19,19 @@ CREATE table vote_item
     item_content varchar(50) not null,
     item_count   integer     not null,
     vote_id      bigint      not null,
+    created_at   datetime(6)  not null default now(6),
+    updated_at   datetime(6)  not null default now(6),
+    deleted_at   datetime(6)           default null,
     primary key (vote_item_id)
+);
+
+CREATE table vote_user
+(
+    vote_user_id bigint not null auto_increment,
+    member_id    bigint not null,
+    vote_item_id bigint not null,
+    created_at   datetime(6)  not null default now(6),
+    updated_at   datetime(6)  not null default now(6),
+    deleted_at   datetime(6)           default null,
+    primary key (vote_user_id)
 );
