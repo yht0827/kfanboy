@@ -1,10 +1,5 @@
 package com.example.kfanboy.vote.domain.entity;
 
-import java.time.LocalDateTime;
-
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-
 import com.example.kfanboy.global.common.BaseTimeEntity;
 
 import jakarta.persistence.Column;
@@ -23,8 +18,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "vote_user")
-@SQLRestriction("deleted_at is null")
-@SQLDelete(sql = "update vote_user set deleted_at=current_timestamp where vote_user_id = ?")
 public class VoteUser extends BaseTimeEntity {
 
 	@Id
@@ -40,15 +33,11 @@ public class VoteUser extends BaseTimeEntity {
 	@Column(name = "vote_item_id", nullable = false)
 	private Long voteItemId;
 
-	@Column(name = "deleted_at")
-	private LocalDateTime deletedAt;
-
 	@Builder
-	public VoteUser(Long voteUserId, Long memberId, Long voteItemId, LocalDateTime deletedAt) {
+	public VoteUser(Long voteUserId, Long memberId, Long voteItemId) {
 		this.voteUserId = voteUserId;
 		this.memberId = memberId;
 		this.voteItemId = voteItemId;
-		this.deletedAt = deletedAt;
 	}
 }
 

@@ -21,7 +21,6 @@ CREATE table vote_item
     vote_id      bigint      not null,
     created_at   datetime(6)  not null default now(6),
     updated_at   datetime(6)  not null default now(6),
-    deleted_at   datetime(6)           default null,
     primary key (vote_item_id)
 );
 
@@ -32,6 +31,5 @@ CREATE table vote_user
     vote_item_id bigint not null,
     created_at   datetime(6)  not null default now(6),
     updated_at   datetime(6)  not null default now(6),
-    deleted_at   datetime(6)           default null,
     primary key (vote_user_id)
 );
