@@ -1,7 +1,5 @@
 package com.example.kfanboy.vote.domain.entity;
 
-import com.example.kfanboy.global.common.BaseTimeEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "vote_item")
-public class VoteItem extends BaseTimeEntity {
+public class VoteItem {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
