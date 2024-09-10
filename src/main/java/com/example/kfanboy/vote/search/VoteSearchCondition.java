@@ -1,4 +1,7 @@
 package com.example.kfanboy.vote.search;
 
-public record VoteSearchCondition() {
+import lombok.Builder;
+
+@Builder
+public record VoteSearchCondition(String title, String nickName) {
 }

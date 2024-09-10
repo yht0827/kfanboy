@@ -38,4 +38,8 @@ public class VoteItem {
 		this.itemCount = itemCount;
 		this.voteId = voteId;
 	}
+
+	public void updateItemCount() {
+		this.itemCount++;
+	}
 }

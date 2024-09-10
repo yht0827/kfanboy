@@ -37,6 +37,14 @@ public enum ErrorMessage {
 	COMMENT_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 댓글입니다."),
 	COMMENT_WRITER_NOT_MATCHED(HttpStatus.BAD_REQUEST, "댓글 작성자가 아닙니다."),
 
+	// Vote
+	VOTE_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 투표입니다."),
+	VOTE_ITEM_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 투표 아이템입니다."),
+	VOTE_ITEM_TOO_MANY(HttpStatus.BAD_REQUEST, "투표 아이템은 최대 10개 까지만 추가할 수 있습니다."),
+	VOTE_USER_EXISTED(HttpStatus.BAD_REQUEST, "이미 투표한 사용자입니다."),
+	VOTE_COUNT_LIMIT(HttpStatus.BAD_REQUEST, "최대 개수를 초과해서 더 이상 투표 할 수 없습니다."),
+	VOTE_TIME_EXPIRED(HttpStatus.BAD_REQUEST, "투표 가능한 시간이 아닙니다."),
+
 	DUMMY(null, "");
 
 	private final HttpStatus status;

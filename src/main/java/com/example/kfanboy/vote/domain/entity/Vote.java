@@ -42,7 +42,7 @@ public class Vote extends BaseTimeEntity {
 	private LocalDateTime startAt;
 
 	@NotNull
-	@Column(name = "end_at")
+	@Column(name = "end_at", nullable = false)
 	private LocalDateTime endAt;
 
 	@NotNull
@@ -76,4 +76,9 @@ public class Vote extends BaseTimeEntity {
 		this.memberId = memberId;
 		this.deletedAt = deletedAt;
 	}
+
+	public void updateVoteCount() {
+		this.voteCount++;
+	}
+
 }
