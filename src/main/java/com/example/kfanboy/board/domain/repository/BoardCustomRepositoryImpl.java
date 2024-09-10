@@ -33,8 +33,8 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
 	private final JPAQueryFactory jpaQueryFactory;
 
 	@Override
-	public PageResponseDto<BoardResponseDto> getBoardList(BoardSearchCondition boardSearchCondition,
-		Pageable pageable) {
+	public PageResponseDto<BoardResponseDto> getBoardList(final BoardSearchCondition boardSearchCondition,
+		final Pageable pageable) {
 
 		List<BoardResponseDto> list = selectBoardResponseDto().where(startWithTitle(boardSearchCondition.title()),
 				startWithWriterNickName(boardSearchCondition.nickName()))
@@ -56,7 +56,7 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
 	}
 
 	@Override
-	public Optional<BoardResponseDto> findByBoardId(Long boardId) {
+	public Optional<BoardResponseDto> findByBoardId(final Long boardId) {
 		return Optional.ofNullable(selectBoardResponseDto().where(board.boardId.eq(boardId)).fetchFirst());
 	}
 

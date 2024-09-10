@@ -95,8 +95,8 @@ public class CommentService {
 	 *  1. 댓글 저장 -> 마지막 그룹 번호 조회(NULL 0으로 변환) + 1을 한다음 저장
 	 *  2. 대댓글 저장
 	 */
-	@SuppressWarnings("checkstyle:MultipleVariableDeclarations")
-	private CommentStatus updateCommentStatus(CommentCreateRequestDto commentCreateRequestDto, Board board) {
+	@Transactional
+	public CommentStatus updateCommentStatus(CommentCreateRequestDto commentCreateRequestDto, Board board) {
 		// 부모가 존재 하지 않는 경우(댓글 저장)
 		if (commentCreateRequestDto.parentCommentId() == 0L) {
 			return CommentStatus.builder()
