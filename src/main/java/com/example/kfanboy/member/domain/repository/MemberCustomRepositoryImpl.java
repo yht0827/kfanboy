@@ -26,7 +26,6 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
 
 	private final JPAQueryFactory queryFactory;
 
-	@SuppressWarnings("checkstyle:WhitespaceAround")
 	@Override
 	public PageResponseDto<UserResponseDto> getUserList(final MemberSearchCondition memberSearchCondition,
 		final Pageable pageable) {
