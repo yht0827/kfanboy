@@ -20,7 +20,7 @@ import com.example.kfanboy.vote.dto.VoteCreateRequestDto;
 import com.example.kfanboy.vote.dto.VoteDetailResponseDto;
 import com.example.kfanboy.vote.dto.VoteResponseDto;
 import com.example.kfanboy.vote.search.VoteSearchCondition;
-import com.example.kfanboy.vote.service.VoteService;
+import com.example.kfanboy.vote.service.VoteApplication;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,30 +30,30 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/api/vote")
 public class VoteController {
 
-	private final VoteService voteService;
+	private final VoteApplication voteApplication;
 
 	@GetMapping("/{voteId}")
 	public ResponseEntity<ResponseDto<VoteDetailResponseDto>> getDetailVote(@PathVariable final Long voteId) {
-		return success(voteService.getDetailVote(voteId));
+		return success(voteApplication.getDetailVote(voteId));
 	}
 
 	@GetMapping("/list")
 	public ResponseEntity<PageResponseDto<VoteResponseDto>> getVoteList(
 		final VoteSearchCondition voteSearchCondition, final Pageable pageable) {
-		return success(voteService.getVoteList(voteSearchCondition, pageable));
+		return success(voteApplication.getVoteList(voteSearchCondition, pageable));
 	}
 
 	@LoginCheck
 	@PostMapping
 	public ResponseEntity<ResponseDto<?>> createVote(@CurrentUser final Long memberId,
 		@Valid @RequestBody final VoteCreateRequestDto voteCreateRequestDto) {
-		return create(voteService.createVote(memberId, voteCreateRequestDto));
+		return create(voteApplication.createVote(memberId, voteCreateRequestDto));
 	}
 
 	@LoginCheck
 	@PostMapping("/act")
 	public ResponseEntity<ResponseDto<?>> voteAct(@CurrentUser final Long memberId,
 		@Valid @RequestBody final VoteActRequestDto voteActRequestDto) {
-		return create(voteService.voteAct(memberId, voteActRequestDto));
+		return create(voteApplication.voteAct(memberId, voteActRequestDto));
 	}
 }

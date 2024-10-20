@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.kfanboy.global.common.MaxCountEnum;
+import com.example.kfanboy.global.common.annotation.DistributeLock;
 import com.example.kfanboy.global.common.response.PageResponseDto;
 import com.example.kfanboy.global.exception.CustomException;
 import com.example.kfanboy.global.exception.ErrorMessage;
@@ -73,11 +74,8 @@ public class VoteService {
 	/**
 	 * 투표 하기 로직
 	 */
-	@Transactional
-	public Long voteAct(final Long memberId, final VoteActRequestDto voteActRequestDto) {
-		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
-
+	@DistributeLock(key = "#key")
+	public Long voteAct(final String key, final Long memberId, final VoteActRequestDto voteActRequestDto) {
 		Vote vote = voteRepository.findById(voteActRequestDto.voteId())
 			.orElseThrow(() -> new CustomException(ErrorMessage.VOTE_NOT_FOUND));
 
@@ -85,7 +83,7 @@ public class VoteService {
 			.orElseThrow(() -> new CustomException(ErrorMessage.VOTE_ITEM_NOT_FOUND));
 
 		// 중복 투표 체크
-		if (voteUserRepository.findVoteUser(member.getMemberId(), voteItem.getVoteId()).isPresent()) {
+		if (voteUserRepository.findVoteUser(memberId, voteItem.getVoteId()).isPresent()) {
 			throw new CustomException(ErrorMessage.VOTE_USER_EXISTED);
 		}
 
@@ -104,7 +102,7 @@ public class VoteService {
 		voteItem.updateItemCount();
 		vote.updateVoteCount();
 
-		return voteUserRepository.save(voteActRequestDto.toEntity(voteItem.getVoteItemId(), member.getMemberId()))
+		return voteUserRepository.save(voteActRequestDto.toEntity(voteItem.getVoteItemId(), memberId))
 			.getVoteUserId();
 	}
 }

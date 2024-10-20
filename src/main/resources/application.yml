@@ -37,6 +37,8 @@ spring:
     redis:
       host: ENC(iOCrqrEBLXqP4TaxRp1DxrrYpD4HSgyB)
       port: 6379
+      repositories:
+        enabled: false
 
 --- # prod
 spring:
@@ -51,3 +53,5 @@ spring:
     redis:
       host: ENC(M4mKVBEMriuCcbM4AxQ6yJH1La5NZt1X)
       port: 6379
+      repositories:
+        enabled: false

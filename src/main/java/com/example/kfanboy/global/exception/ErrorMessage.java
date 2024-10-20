@@ -17,6 +17,7 @@ public enum ErrorMessage {
 	INPUT_ERROR(HttpStatus.BAD_REQUEST, "입력 값 오류"),
 	NOT_AUTHORIZED(HttpStatus.UNAUTHORIZED, "해당 리소스에 대한 접근 권한이 존재 하지 않습니다."),
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류"),
+	LOCK_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Lock 오류"),
 
 	// User
 	USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 회원입니다."),
