@@ -32,7 +32,7 @@
 
 
 ## 📝 WIKI
-- [useCase](https://yht0827.notion.site/851bf6a18ef54469b0fdd8568436b53f)
+- [UseCase](https://yht0827.notion.site/851bf6a18ef54469b0fdd8568436b53f)
 - [Project Rules](https://github.com/yht0827/kfanboy/wiki/2.-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B7%9C%EC%B9%99)
 - [Prototype](https://github.com/yht0827/kfanboy/wiki/3.-%ED%99%94%EB%A9%B4-%EC%84%A4%EA%B3%84)
 - [ERD](https://github.com/yht0827/kfanboy/wiki/1.-ERD-%EA%B5%AC%EC%A1%B0)
