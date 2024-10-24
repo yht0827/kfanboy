@@ -32,9 +32,11 @@
 
 
 ## 📝 WIKI
+- [useCase](https://yht0827.notion.site/851bf6a18ef54469b0fdd8568436b53f)
+- [Project Rules](https://github.com/yht0827/kfanboy/wiki/2.-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B7%9C%EC%B9%99)
 - [Prototype](https://github.com/yht0827/kfanboy/wiki/3.-%ED%99%94%EB%A9%B4-%EC%84%A4%EA%B3%84)
 - [ERD](https://github.com/yht0827/kfanboy/wiki/1.-ERD-%EA%B5%AC%EC%A1%B0)
-- [API Specification](https://github.com/yht0827/kfanboy/wiki/4.-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-API-%EB%AA%85%EC%84%B8%EC%84%9C)
+- [API Specification](https://yht0827.github.io/kfanboy/src/main/resources/static/index.html)
 - [Architecture](https://github.com/yht0827/kfanboy/wiki/5.-Architecture)
-- [ISSUE](https://github.com/yht0827/kfanboy/wiki/6.-%EC%9D%B4%EC%8A%88-%ED%95%B4%EA%B2%B0-%EA%B4%80%EB%A0%A8-%ED%8F%AC%EC%8A%A4%ED%8C%85)
+- [Issue](https://github.com/yht0827/kfanboy/wiki/6.-%EC%9D%B4%EC%8A%88-%ED%95%B4%EA%B2%B0-%EA%B4%80%EB%A0%A8-%ED%8F%AC%EC%8A%A4%ED%8C%85)
 
