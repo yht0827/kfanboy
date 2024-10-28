@@ -5,12 +5,13 @@ CREATE table vote
     vote_count     integer     not null,
     max_vote_count integer     not null,
     is_finished    boolean     not null,
-    start_at       datetime(6)  not null default now(6),
-    end_at         datetime(6)           default null,
-    created_at     datetime(6)  not null default now(6),
-    updated_at     datetime(6)  not null default now(6),
-    deleted_at     datetime(6)           default null,
+    start_at       datetime(6) not null default now(6),
+    end_at         datetime(6)          default null,
+    created_at     datetime(6) not null default now(6),
+    updated_at     datetime(6) not null default now(6),
+    deleted_at     datetime(6)          default null,
     member_id      bigint      not null,
+    nick_name      varchar(30) not null,
     primary key (vote_id)
 );
 
