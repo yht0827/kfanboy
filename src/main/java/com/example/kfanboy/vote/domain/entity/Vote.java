@@ -60,12 +60,15 @@ public class Vote extends BaseTimeEntity {
 	@Column(name = "member_id", nullable = false)
 	private Long memberId;
 
+	@Column(name = "nick_name", nullable = false)
+	private String nickName;
+
 	@Column(name = "deleted_at")
 	private LocalDateTime deletedAt;
 
 	@Builder
 	public Vote(Long voteId, String title, LocalDateTime startAt, LocalDateTime endAt, Boolean isFinished,
-		Long voteCount, Long maxVoteCount, Long memberId, LocalDateTime deletedAt) {
+		Long voteCount, Long maxVoteCount, Long memberId, String nickName, LocalDateTime deletedAt) {
 		this.voteId = voteId;
 		this.title = title;
 		this.startAt = startAt;
@@ -74,6 +77,7 @@ public class Vote extends BaseTimeEntity {
 		this.voteCount = voteCount;
 		this.maxVoteCount = maxVoteCount;
 		this.memberId = memberId;
+		this.nickName = nickName;
 		this.deletedAt = deletedAt;
 	}
 

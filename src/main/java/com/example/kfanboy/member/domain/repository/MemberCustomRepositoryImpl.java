@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import com.example.kfanboy.global.common.response.PageResponseDto;
 import com.example.kfanboy.member.dto.UserResponseDto;
@@ -30,12 +31,7 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
 	public PageResponseDto<UserResponseDto> getUserList(final MemberSearchCondition memberSearchCondition,
 		final Pageable pageable) {
 
-		List<UserResponseDto> list = queryFactory.select(Projections.constructor(UserResponseDto.class,
-				member.memberId,
-				member.email,
-				member.nickName,
-				member.userRole
-			))
+		List<Long> ids = queryFactory.select(member.memberId)
 			.from(member)
 			.where(
 				likeNickName(memberSearchCondition.nickName()))
@@ -44,15 +40,25 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
 			.limit(pageable.getPageSize())
 			.fetch();
 
-		if (list.isEmpty()) {
+		if (CollectionUtils.isEmpty(ids)) {
 			return PageResponseDto.toDto(Page.empty());
 		}
+
+		List<UserResponseDto> list = queryFactory.select(Projections.constructor(UserResponseDto.class,
+				member.memberId,
+				member.email,
+				member.nickName,
+				member.userRole
+			))
+			.from(member)
+			.where(member.memberId.in(ids))
+			.orderBy(member.memberId.desc())
+			.fetch();
 
 		JPAQuery<Long> count = queryFactory
 			.select(member.count())
 			.from(member)
-			.where(
-				likeNickName(memberSearchCondition.nickName()));
+			.where(likeNickName(memberSearchCondition.nickName()));
 
 		return PageResponseDto.toDto(PageableExecutionUtils.getPage(list, pageable, count::fetchOne));
 	}

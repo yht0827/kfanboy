@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import com.example.kfanboy.global.common.response.PageResponseDto;
 import com.example.kfanboy.member.dto.UserResponseDto;
@@ -64,12 +65,8 @@ public class VoteCustomRepositoryImpl implements VoteCustomRepository {
 	public PageResponseDto<VoteResponseDto> getVoteList(final VoteSearchCondition voteSearchCondition,
 		final Pageable pageable) {
 
-		List<VoteResponseDto> list = jpaQueryFactory.select(
-				Projections.constructor(VoteResponseDto.class, vote.voteId, vote.title, vote.startAt, vote.endAt,
-					member.memberId, member.nickName))
+		List<Long> ids = jpaQueryFactory.select(vote.voteId)
 			.from(vote)
-			.innerJoin(member)
-			.on(vote.memberId.eq(member.memberId))
 			.where(startWithVoteTitle(voteSearchCondition.title()),
 				startWithVoteCreatorNickName(voteSearchCondition.nickName()))
 			.orderBy(vote.voteId.desc())
@@ -77,11 +74,20 @@ public class VoteCustomRepositoryImpl implements VoteCustomRepository {
 			.limit(pageable.getPageSize())
 			.fetch();
 
-		if (list.isEmpty()) {
+		if (CollectionUtils.isEmpty(ids)) {
 			return PageResponseDto.toDto(Page.empty());
 		}
 
-		JPAQuery<Long> count = jpaQueryFactory.select(vote.count())
+		List<VoteResponseDto> list = jpaQueryFactory.select(
+				Projections.constructor(VoteResponseDto.class, vote.voteId, vote.title, vote.startAt, vote.endAt,
+					vote.memberId, vote.nickName))
+			.from(vote)
+			.where(vote.voteId.in(ids))
+			.orderBy(vote.voteId.desc())
+			.fetch();
+
+		JPAQuery<Long> count = jpaQueryFactory
+			.select(vote.count())
 			.from(vote)
 			.where(startWithVoteTitle(voteSearchCondition.title()),
 				startWithVoteCreatorNickName(voteSearchCondition.nickName()));
@@ -90,7 +96,7 @@ public class VoteCustomRepositoryImpl implements VoteCustomRepository {
 	}
 
 	private BooleanExpression startWithVoteCreatorNickName(final String keyword) {
-		return StringUtils.isEmpty(keyword) ? null : member.nickName.startsWith(keyword);
+		return StringUtils.isEmpty(keyword) ? null : vote.nickName.startsWith(keyword);
 	}
 
 	private BooleanExpression startWithVoteTitle(final String keyword) {
