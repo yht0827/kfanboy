@@ -39,6 +39,12 @@ spring:
       port: 6379
       repositories:
         enabled: false
+    elasticsearch:
+      repositories:
+        enabled: true
+  elasticsearch:
+    uris: ENC(5U0RmHnGfLtATjJdOGD2TG18L7CCxNZgHBNu1+ZtEgI=)
+
 
 --- # prod
 spring:
@@ -55,3 +61,8 @@ spring:
       port: 6379
       repositories:
         enabled: false
+    elasticsearch:
+      repositories:
+        enabled: true
+  elasticsearch:
+    uris: ENC(j9QVcoBmKfvBteDa/B48v93ZwMKwkxbQjWgJLyHKvr0=)

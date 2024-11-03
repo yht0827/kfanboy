@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.kfanboy.board.domain.entity.Board;
+import com.example.kfanboy.board.domain.entity.BoardDocument;
+import com.example.kfanboy.board.domain.repository.BoardDocumentRepository;
 import com.example.kfanboy.board.domain.repository.BoardRepository;
 import com.example.kfanboy.global.exception.CustomException;
 import com.example.kfanboy.global.exception.ErrorMessage;
@@ -21,6 +23,7 @@ public class LikeService {
 
 	private final LikeRepository likeRepository;
 	private final BoardRepository boardRepository;
+	private final BoardDocumentRepository boardDocumentRepository;
 
 	@Transactional(readOnly = true)
 	public LikeResponseDto getLike(final Long memberId, final Long boardId) {
@@ -55,6 +58,13 @@ public class LikeService {
 		Board board = boardRepository.findById(boardId)
 			.orElseThrow(() -> new CustomException(ErrorMessage.BOARD_NOT_FOUND));
 
-		board.getBoardCount().changeLike(isLiked); // 좋아요 개수 카운트 업데이트
+		BoardDocument boardDocument = boardDocumentRepository.findById(boardId)
+			.orElseThrow(() -> new CustomException(ErrorMessage.BOARD_NOT_FOUND));
+
+		// 좋아요 개수 카운트 업데이트
+		board.getBoardCount().changeLike(isLiked);
+		boardDocument.updateLikeCount(isLiked);
+
+		boardDocumentRepository.save(boardDocument);
 	}
 }
