@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.kfanboy.board.domain.entity.Board;
+import com.example.kfanboy.board.domain.entity.BoardDocument;
+import com.example.kfanboy.board.domain.repository.BoardDocumentRepository;
 import com.example.kfanboy.board.domain.repository.BoardRepository;
 import com.example.kfanboy.comment.domain.entity.Comment;
 import com.example.kfanboy.comment.domain.repository.CommentRepository;
@@ -28,6 +30,7 @@ public class CommentService {
 
 	private final CommentRepository commentRepository;
 	private final BoardRepository boardRepository;
+	private final BoardDocumentRepository boardDocumentRepository;
 
 	@Transactional(readOnly = true)
 	public PageResponseDto<CommentResponseDto> getList(final Long boardId, final Pageable pageable) {
@@ -39,11 +42,17 @@ public class CommentService {
 		Board board = boardRepository.findById(commentCreateRequestDto.boardId())
 			.orElseThrow(() -> new CustomException(ErrorMessage.BOARD_NOT_FOUND));
 
+		BoardDocument boardDocument = boardDocumentRepository.findById(commentCreateRequestDto.boardId())
+			.orElseThrow(() -> new CustomException(ErrorMessage.BOARD_NOT_FOUND));
+
 		Comment comment = commentRepository.save(
 			commentCreateRequestDto.toEntity(updateCommentStatus(commentCreateRequestDto, board), memberId));
 
 		// 게시글 댓글 수 증가
 		board.getBoardCount().changeComment(true);
+
+		boardDocument.updateCommentCount(true);
+		boardDocumentRepository.save(boardDocument);
 
 		return comment.getCommentId();
 	}
@@ -75,16 +84,26 @@ public class CommentService {
 			Board board = boardRepository.findById(comment.getBoardId())
 				.orElseThrow(() -> new CustomException(ErrorMessage.BOARD_NOT_FOUND));
 
+			BoardDocument boardDocument = boardDocumentRepository.findById(comment.getBoardId())
+				.orElseThrow(() -> new CustomException(ErrorMessage.BOARD_NOT_FOUND));
+
 			// 정렬 순서 업데이트
 			commentRepository.decreaseSequence(comment.getCommentStatus().getCommentGroup(),
 				comment.getCommentStatus().getCommentGroupOrder());
 
-			Comment parent = commentRepository.findById(comment.getCommentStatus().getParentId())
-				.orElseThrow(() -> new CustomException(ErrorMessage.COMMENT_NOT_FOUND));
+			// 부모 카운트 카운트 감소
+			if (comment.getCommentStatus().getParentId() > 0L) {
+				Comment parentComment = commentRepository.findById(comment.getCommentStatus().getParentId())
+					.orElseThrow(() -> new CustomException(ErrorMessage.COMMENT_NOT_FOUND));
 
-			// 부모 카운트 & 게시글 댓글 수 카운트 감소
-			parent.getCommentStatus().updateChildCount(false);
+				parentComment.getCommentStatus().updateChildCount(false);
+			}
+
+			// 게시글 댓글 수 감소 로직
 			board.getBoardCount().changeComment(false);
+			boardDocument.updateCommentCount(false);
+
+			boardDocumentRepository.save(boardDocument);
 
 			commentRepository.delete(comment);
 		}

@@ -1,28 +1,33 @@
 package com.example.kfanboy.board.dto;
 
-import com.example.kfanboy.board.domain.entity.Board;
-import com.example.kfanboy.board.domain.vo.BoardCount;
-import com.example.kfanboy.category.domain.entity.Category;
-import com.example.kfanboy.category.dto.CategoryResponseDto;
-import com.example.kfanboy.member.domain.entity.Member;
-import com.example.kfanboy.member.dto.UserResponseDto;
+import java.time.LocalDateTime;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import com.example.kfanboy.board.domain.entity.BoardDocument;
+import com.example.kfanboy.member.domain.entity.UserRole;
+
 import lombok.Builder;
 
 @Builder
 public record BoardResponseDto(
-	@NotNull Long boardId, @NotBlank String title, @NotBlank String content,
-	BoardCount boardCount, UserResponseDto member, CategoryResponseDto category) {
-	public static BoardResponseDto toDto(Board board, Member member, Category category) {
+	Long boardId, String title, String content, Integer likeCount, Integer commentCount, Integer viewCount,
+	Long memberId, String email, String nickName, UserRole userRole, Long categoryId, String categoryName,
+	LocalDateTime createdAt, LocalDateTime updatedAt) {
+	public static BoardResponseDto toDto(BoardDocument boardDocument) {
 		return BoardResponseDto.builder()
-			.boardId(board.getBoardId())
-			.title(board.getTitle())
-			.content(board.getContent())
-			.boardCount(board.getBoardCount())
-			.member(UserResponseDto.toDto(member))
-			.category(CategoryResponseDto.toDto(category))
+			.boardId(boardDocument.getBoardId())
+			.title(boardDocument.getTitle())
+			.content(boardDocument.getContent())
+			.likeCount(boardDocument.getLikeCount())
+			.commentCount(boardDocument.getCommentCount())
+			.viewCount(boardDocument.getViewCount())
+			.memberId(boardDocument.getMemberId())
+			.email(boardDocument.getEmail())
+			.nickName(boardDocument.getNickName())
+			.userRole(boardDocument.getUserRole())
+			.categoryId(boardDocument.getCategoryId())
+			.categoryName(boardDocument.getCategoryName())
+			.createdAt(boardDocument.getCreatedAt())
+			.updatedAt(boardDocument.getUpdatedAt())
 			.build();
 	}
 }
